@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chuyên san Khoa học
 
-## Getting Started
+Nền tảng tạp chí học thuật tiếng Việt xây bằng Next.js, Prisma và PostgreSQL.
 
-First, run the development server:
+## Chức năng đã có trong starter
+
+- Trang landing cho tạp chí, số hiện hành và quy trình xuất bản.
+- Cổng tác giả nộp bản thảo tại `/nop-bai`.
+- API `POST /api/submissions` để tạo tác giả, bản thảo, tệp metadata và audit log.
+- Bàn điều hành `/dashboard` cho admin, tổng biên tập, biên tập viên, phản biện và tác giả.
+- Trang lưu trữ `/luu-tru` cho các số đã xuất bản.
+- Prisma schema cho người dùng, vai trò, bản thảo, phản biện, vòng sửa, quyết định, số tạp chí, bài xuất bản và nhật ký.
+- Railway config-as-code với standalone Next.js, healthcheck và pre-deploy migration.
+
+## Chạy local
 
 ```bash
+npm install
+cp .env.example .env
+# sửa DATABASE_URL trỏ tới Postgres local hoặc Railway Postgres
+npm run db:generate
+npm run db:push
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy Railway
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push thư mục này lên GitHub.
+2. Railway: New Project -> Deploy from GitHub repo.
+3. Add PostgreSQL trên Project Canvas.
+4. Trong service Next.js, Variables -> Add Reference Variable -> chọn `DATABASE_URL` từ PostgreSQL service.
+5. Redeploy. `railway.json` sẽ chạy `npm run db:migrate` trước khi start.
+6. Settings -> Networking -> Generate Domain để lấy URL public.
 
-## Learn More
+## Mở rộng cho production
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Thêm xác thực bằng Auth.js hoặc Clerk, map session sang `User.role`.
+- Dùng Railway Object Storage hoặc S3/R2 cho file bản thảo thay vì chỉ lưu metadata.
+- Tách worker gửi email/thông báo khi bản thảo đổi trạng thái.
+- Thêm chỉ mục tìm kiếm PostgreSQL full text cho bài viết và bản thảo.
+- Bật backup PostgreSQL, quan sát bằng logs/metrics và tách môi trường staging/production.
