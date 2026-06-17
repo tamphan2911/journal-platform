@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronDown, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 const utilityLinks = [
   "Viên chức, người lao động",
@@ -10,9 +10,9 @@ const utilityLinks = [
 ];
 
 const mainLinks = [
-  { href: "/gioi-thieu", label: "GIỚI THIỆU", dropdown: true },
+  { href: "/gioi-thieu", label: "GIỚI THIỆU" },
   { href: "/tac-gia", label: "TUYỂN SINH" },
-  { href: "/workspace", label: "ĐÀO TẠO", dropdown: true },
+  { href: "/workspace", label: "ĐÀO TẠO" },
   { href: "/luu-tru", label: "NGHIÊN CỨU" },
   { href: "/phan-bien", label: "GẮN KẾT CỘNG ĐỒNG" },
 ];
@@ -61,7 +61,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     className="inline-flex items-center gap-1.5 whitespace-nowrap leading-none hover:text-[#f15a24]"
                   >
                     {item.label}
-                    {item.dropdown && <ChevronDown size={17} strokeWidth={1.8} />}
                   </Link>
                 ))}
                 <Link href="/archives" aria-label="Tìm kiếm" className="text-[#f15a24]">
