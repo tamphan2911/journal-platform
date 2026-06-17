@@ -46,9 +46,9 @@ export const roles = [
 export const manuscripts = [
   {
     code: "CS-2026-014",
-    title: "Năng lực chuyển đổi số trong quản trị giáo dục đại học",
+    title: "Năng lực chuyển đổi số trong quản trị công tại đô thị lớn",
     author: "Nguyễn Minh Anh",
-    field: "Giáo dục",
+    field: "Quản trị công",
     status: "Đang phản biện",
     accent: "blue",
     progress: 66,
@@ -57,7 +57,7 @@ export const manuscripts = [
   },
   {
     code: "CS-2026-011",
-    title: "Tác động của dữ liệu mở đến đổi mới sáng tạo địa phương",
+    title: "Tác động của dữ liệu mở đến năng lực cạnh tranh địa phương",
     author: "Trần Hoàng Nam",
     field: "Kinh tế số",
     status: "Yêu cầu sửa",
@@ -68,9 +68,9 @@ export const manuscripts = [
   },
   {
     code: "CS-2026-009",
-    title: "Mô hình chăm sóc sức khỏe cộng đồng dựa trên bằng chứng",
+    title: "Bảo vệ người tiêu dùng trong giao dịch thương mại điện tử",
     author: "Lê Thảo Vy",
-    field: "Y tế công cộng",
+    field: "Luật kinh tế",
     status: "Chờ biên tập",
     accent: "green",
     progress: 82,
@@ -79,9 +79,9 @@ export const manuscripts = [
   },
   {
     code: "CS-2026-006",
-    title: "Đạo đức AI trong phân tích dữ liệu khoa học xã hội",
+    title: "Quản trị AI có trách nhiệm trong phân tích dữ liệu tài chính",
     author: "Phạm Quốc Huy",
-    field: "Công nghệ",
+    field: "Tài chính",
     status: "Đã chấp nhận",
     accent: "dark",
     progress: 100,
@@ -92,28 +92,28 @@ export const manuscripts = [
 
 export const issueArticles = [
   {
-    title: "Chuyển đổi số và năng lực nghiên cứu trong trường đại học",
+    title: "Chuyển đổi số và hiệu quả quản trị công tại đô thị lớn",
     authors: "Nguyễn Minh Anh, Lê Hữu Phúc",
     pages: "05-18",
-    field: "Giáo dục",
+    field: "Quản trị công",
   },
   {
-    title: "Dữ liệu mở cho hoạch định chính sách địa phương",
+    title: "Dữ liệu mở cho hoạch định chính sách phát triển địa phương",
     authors: "Trần Hoàng Nam",
     pages: "19-34",
     field: "Chính sách công",
   },
   {
-    title: "Mô hình phản biện kín trong tạp chí chuyên ngành",
+    title: "Cơ chế bảo vệ người tiêu dùng trong nền tảng số",
     authors: "Đỗ Bảo Châu, Phạm Hà",
     pages: "35-46",
-    field: "Xuất bản khoa học",
+    field: "Luật kinh tế",
   },
   {
-    title: "AI có trách nhiệm trong phân tích dữ liệu xã hội",
+    title: "AI có trách nhiệm trong phân tích dữ liệu tài chính",
     authors: "Phạm Quốc Huy",
     pages: "47-62",
-    field: "Công nghệ",
+    field: "Tài chính",
   },
 ];
 

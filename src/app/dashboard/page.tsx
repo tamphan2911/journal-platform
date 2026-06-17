@@ -17,8 +17,8 @@ export default function DashboardPage() {
       <section className="mx-auto min-h-screen w-full max-w-[1480px] px-5 py-8 md:px-8 lg:px-12 lg:py-12">
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div>
-            <p className="text-sm font-bold uppercase text-[var(--nav-blue)]">Bàn điều hành</p>
-            <h1 className="mt-2 font-serif text-5xl font-extrabold text-black">
+            <p className="section-kicker">Bàn điều hành</p>
+            <h1 className="gold-rule mt-2 font-serif text-5xl font-extrabold text-[var(--uel-navy)]">
               Quản lý bản thảo
             </h1>
             <p className="mt-4 max-w-2xl text-[var(--muted)]">
@@ -27,12 +27,12 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="panel flex min-w-[280px] items-center gap-4 p-4">
-            <div className="grid h-12 w-12 place-items-center rounded-md bg-[#dbe8ff] text-[var(--nav-blue)]">
+            <div className="grid h-12 w-12 place-items-center rounded-[4px] bg-[#e8f0fb] text-[var(--nav-blue)]">
               <Activity />
             </div>
             <div>
               <p className="text-sm text-[var(--muted)]">Hàng đợi hôm nay</p>
-              <p className="text-2xl font-extrabold text-black">18 tác vụ</p>
+              <p className="text-2xl font-extrabold text-[var(--uel-navy)]">18 tác vụ</p>
             </div>
           </div>
         </div>
@@ -66,14 +66,14 @@ export default function DashboardPage() {
             <div className="panel p-5 md:p-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-bold uppercase text-[var(--nav-blue)]">
+                  <p className="section-kicker">
                     Pipeline bản thảo
                   </p>
-                  <h2 className="mt-2 font-serif text-3xl font-bold text-black">
+                  <h2 className="mt-2 font-serif text-3xl font-bold text-[var(--uel-navy)]">
                     Hồ sơ mới cập nhật
                   </h2>
                 </div>
-                <button className="rounded-md border border-[#c9d7ef] bg-white px-4 py-2 text-sm font-bold text-[var(--nav-blue)]">
+                <button className="rounded-[4px] border border-[#c9d7ef] bg-white px-4 py-2 text-sm font-bold text-[var(--nav-blue)] transition hover:border-[var(--nav-blue)] hover:bg-[#f8fbff]">
                   Lọc trạng thái
                 </button>
               </div>
@@ -81,7 +81,7 @@ export default function DashboardPage() {
                 {manuscripts.map((item) => (
                   <article
                     key={item.code}
-                    className="grid gap-4 rounded-md border border-[#dbe6f7] bg-white p-4 md:grid-cols-[1fr_160px_150px_110px]"
+                    className="grid gap-4 rounded-[4px] border border-[#dbe6f7] bg-white p-4 md:grid-cols-[1fr_160px_150px_110px]"
                   >
                     <div>
                       <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -92,7 +92,7 @@ export default function DashboardPage() {
                           {item.code}
                         </span>
                       </div>
-                      <h3 className="text-lg font-extrabold leading-6 text-black">{item.title}</h3>
+                      <h3 className="text-lg font-extrabold leading-6 text-[var(--uel-navy)]">{item.title}</h3>
                       <p className="mt-2 text-sm text-[var(--muted)]">
                         {item.author} · {item.field}
                       </p>
@@ -115,16 +115,16 @@ export default function DashboardPage() {
           <aside className="space-y-5">
             <div className="panel p-5">
               <div className="flex items-center justify-between">
-                <h2 className="font-serif text-2xl font-bold text-black">Quản trị</h2>
+                <h2 className="font-serif text-2xl font-bold text-[var(--uel-navy)]">Quản trị</h2>
                 <Settings2 className="text-[var(--nav-blue)]" />
               </div>
               <div className="mt-5 grid grid-cols-2 gap-3">
                 {adminTools.map((tool) => {
                   const Icon = tool.icon;
                   return (
-                    <div key={tool.label} className="rounded-md border border-[#dbe6f7] p-4">
+                    <div key={tool.label} className="rounded-[4px] border border-[#dbe6f7] p-4">
                       <Icon className="text-[var(--nav-blue)]" size={22} />
-                      <p className="mt-4 text-3xl font-extrabold text-black">{tool.value}</p>
+                      <p className="mt-4 text-3xl font-extrabold text-[var(--uel-navy)]">{tool.value}</p>
                       <p className="text-sm text-[var(--muted)]">{tool.label}</p>
                     </div>
                   );
@@ -134,15 +134,15 @@ export default function DashboardPage() {
 
             <div className="panel p-5">
               <div className="flex items-center gap-3">
-                <BarChart3 className="text-[#4fd0df]" />
-                <h2 className="font-serif text-2xl font-bold text-black">Chuyên mục</h2>
+                <BarChart3 className="text-[var(--cyan)]" />
+                <h2 className="font-serif text-2xl font-bold text-[var(--uel-navy)]">Chuyên mục</h2>
               </div>
               <div className="mt-5 space-y-3">
                 {[
-                  ["Giáo dục", "82%"],
+                  ["Quản trị công", "82%"],
                   ["Kinh tế số", "64%"],
-                  ["Y tế công cộng", "58%"],
-                  ["Công nghệ", "71%"],
+                  ["Luật kinh tế", "58%"],
+                  ["Tài chính", "71%"],
                 ].map(([label, value]) => (
                   <div key={label}>
                     <div className="mb-2 flex justify-between text-sm">
@@ -162,8 +162,8 @@ export default function DashboardPage() {
 
             <div className="panel p-5">
               <div className="flex items-center gap-3">
-                <CalendarClock className="text-[#39a852]" />
-                <h2 className="font-serif text-2xl font-bold text-black">Lịch biên tập</h2>
+                <CalendarClock className="text-[var(--green)]" />
+                <h2 className="font-serif text-2xl font-bold text-[var(--uel-navy)]">Lịch biên tập</h2>
               </div>
               <div className="mt-5 space-y-3">
                 {[
@@ -171,7 +171,7 @@ export default function DashboardPage() {
                   ["22/06", "Họp hội đồng biên tập"],
                   ["30/06", "Xuất bản trực tuyến"],
                 ].map(([date, text]) => (
-                  <div key={date} className="grid grid-cols-[64px_1fr] gap-3 rounded-md border border-[#dbe6f7] p-3">
+                  <div key={date} className="grid grid-cols-[64px_1fr] gap-3 rounded-[4px] border border-[#dbe6f7] p-3">
                     <span className="font-extrabold text-[var(--nav-blue)]">{date}</span>
                     <span className="text-sm text-[var(--muted)]">{text}</span>
                   </div>
@@ -199,18 +199,18 @@ function QueueCard({
   tone: "blue" | "cyan" | "green";
 }) {
   const colors = {
-    blue: "bg-[#dbe8ff] text-[var(--nav-blue)]",
+    blue: "bg-[#e8f0fb] text-[var(--nav-blue)]",
     cyan: "bg-[#d7f8fb] text-[#147485]",
     green: "bg-[#d9f9df] text-[#216c37]",
   };
 
   return (
     <div className="panel p-5">
-      <div className={`grid h-12 w-12 place-items-center rounded-md ${colors[tone]}`}>
+      <div className={`grid h-12 w-12 place-items-center rounded-[4px] ${colors[tone]}`}>
         {icon}
       </div>
       <p className="mt-5 text-sm text-[var(--muted)]">{label}</p>
-      <p className="mt-2 text-5xl font-extrabold text-black">{value}</p>
+      <p className="mt-2 text-5xl font-extrabold text-[var(--uel-navy)]">{value}</p>
       <p className="mt-2 text-sm text-[var(--muted)]">{helper}</p>
     </div>
   );

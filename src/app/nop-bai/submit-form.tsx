@@ -57,11 +57,11 @@ export function SubmitForm() {
     <form onSubmit={onSubmit} className="panel mt-8 p-5 md:p-6">
       <div className="grid gap-5 md:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-bold text-black">Họ tên tác giả liên hệ</span>
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Họ tên tác giả liên hệ</span>
           <input className="field mt-2" name="authorName" required placeholder="Nguyễn Minh Anh" />
         </label>
         <label className="block">
-          <span className="text-sm font-bold text-black">Email</span>
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Email</span>
           <input
             className="field mt-2"
             name="authorEmail"
@@ -71,7 +71,7 @@ export function SubmitForm() {
           />
         </label>
         <label className="block">
-          <span className="text-sm font-bold text-black">Đơn vị công tác</span>
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Đơn vị công tác</span>
           <input
             className="field mt-2"
             name="affiliation"
@@ -79,22 +79,22 @@ export function SubmitForm() {
           />
         </label>
         <label className="block">
-          <span className="text-sm font-bold text-black">Chuyên mục</span>
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Chuyên mục</span>
           <select className="field mt-2" name="field" required defaultValue="">
             <option value="" disabled>
               Chọn chuyên mục
             </option>
-            <option>Giáo dục</option>
+            <option>Quản trị công</option>
             <option>Kinh tế số</option>
-            <option>Y tế công cộng</option>
-            <option>Công nghệ</option>
+            <option>Luật kinh tế</option>
+            <option>Tài chính</option>
             <option>Chính sách công</option>
           </select>
         </label>
       </div>
 
       <label className="mt-5 block">
-        <span className="text-sm font-bold text-black">Tên bài viết</span>
+        <span className="text-sm font-bold text-[var(--uel-navy)]">Tên bài viết</span>
         <input
           className="field mt-2"
           name="title"
@@ -105,7 +105,7 @@ export function SubmitForm() {
       </label>
 
       <label className="mt-5 block">
-        <span className="text-sm font-bold text-black">Tóm tắt</span>
+        <span className="text-sm font-bold text-[var(--uel-navy)]">Tóm tắt</span>
         <textarea
           className="field mt-2 min-h-[150px]"
           name="abstract"
@@ -117,16 +117,16 @@ export function SubmitForm() {
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-bold text-black">Từ khóa</span>
-          <input className="field mt-2" name="keywords" placeholder="dữ liệu mở, giáo dục, AI" />
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Từ khóa</span>
+          <input className="field mt-2" name="keywords" placeholder="dữ liệu mở, chính sách công, AI" />
         </label>
         <label className="block">
-          <span className="text-sm font-bold text-black">Tệp bản thảo</span>
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Tệp bản thảo</span>
           <input className="field mt-2 p-2" name="manuscriptFile" type="file" />
         </label>
       </div>
 
-      <label className="mt-5 flex gap-3 rounded-md border border-[#dbe6f7] bg-[#f8fbff] p-4">
+      <label className="mt-5 flex gap-3 rounded-[4px] border border-[#dbe6f7] bg-[#fbfcff] p-4">
         <input className="mt-1" type="checkbox" required />
         <span className="text-sm leading-6 text-[var(--muted)]">
           Tôi xác nhận bản thảo chưa được công bố ở nơi khác, tuân thủ đạo đức
@@ -136,7 +136,7 @@ export function SubmitForm() {
 
       <div className="mt-6 flex flex-wrap items-center gap-4">
         <button
-          className="inline-flex items-center gap-2 rounded-md bg-[var(--nav-blue)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#354f96]/24 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-[4px] bg-[var(--nav-blue)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#354f96]/20 transition hover:bg-[var(--uel-navy)] disabled:cursor-not-allowed disabled:opacity-60"
           disabled={state.status === "loading"}
         >
           <Send size={17} />

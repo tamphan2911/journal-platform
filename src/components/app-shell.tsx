@@ -3,64 +3,72 @@ import { navItems } from "@/lib/journal-data";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)]">
-      <div className="fixed inset-0 -z-10 overflow-hidden bg-[linear-gradient(120deg,#ecf3ff_0%,#f6f9ff_52%,#e9f7fb_100%)]">
-        <div className="absolute -left-40 top-10 h-[720px] w-[720px] rounded-[46%] border-[90px] border-[#86a8e2]/30" />
-        <div className="absolute right-[-180px] top-[-220px] h-[620px] w-[780px] rotate-[-18deg] rounded-[44%] bg-[#2f55a0]/10" />
-      </div>
-      <aside className="fixed left-0 top-0 z-20 hidden h-screen w-[116px] bg-[var(--nav-blue)] text-white shadow-2xl shadow-[#213d78]/20 lg:block">
-        <Link
-          href="/"
-          className="flex h-[140px] flex-col items-center justify-center border-b border-white/12 bg-[#36539c]"
-          aria-label="Trang chủ Chuyên san"
-        >
-          <div className="relative h-14 w-14 overflow-hidden rounded-full bg-white">
-            <span className="absolute left-[-10px] top-6 h-3 w-20 rotate-12 rounded-full bg-[#36539c]" />
-            <span className="absolute left-4 top-[-6px] h-20 w-3 -rotate-45 rounded-full bg-[#36539c]" />
+    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] paper-grid">
+      <header className="sticky top-0 z-30 border-b border-[#d8e1ef] bg-white/95 shadow-sm shadow-[#002b5c]/5 backdrop-blur">
+        <div className="bg-[var(--uel-navy)] text-white">
+          <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3 px-5 py-2 text-xs md:px-8 lg:px-12">
+            <span>Trường Đại học Kinh tế - Luật, ĐHQG-HCM</span>
+            <span className="hidden text-white/75 sm:inline">
+              Nghiên cứu · Công bố khoa học · Phản biện học thuật
+            </span>
           </div>
-          <span className="mt-3 text-lg font-extrabold">Chuyên san</span>
-        </Link>
-        <nav className="grid">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group flex h-[92px] flex-col items-center justify-center gap-2 border-b border-white/8 text-sm text-white/82 transition hover:bg-white hover:text-[var(--nav-blue)]"
-              >
-                <Icon size={24} strokeWidth={1.8} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-      </aside>
-      <header className="sticky top-0 z-10 border-b border-[#dbe6f7] bg-white/86 px-5 py-3 backdrop-blur lg:hidden">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="font-serif text-xl font-bold text-[var(--nav-blue)]">
-            Chuyên san
+        </div>
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-5 px-5 py-4 md:px-8 lg:px-12">
+          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Trang chủ Chuyên san">
+            <BrandMark />
+            <span className="min-w-0">
+              <span className="block truncate text-[11px] font-extrabold uppercase tracking-[0.16em] text-[var(--nav-blue)]">
+                UEL Journal Platform
+              </span>
+              <span className="block truncate font-serif text-xl font-bold leading-6 text-[var(--uel-navy)]">
+                Chuyên san Khoa học Kinh tế - Luật
+              </span>
+            </span>
           </Link>
+          <nav className="hidden items-center gap-1 lg:flex">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group inline-flex items-center gap-2 border-b-2 border-transparent px-4 py-3 text-sm font-bold text-slate-600 transition hover:border-[var(--uel-gold)] hover:text-[var(--nav-blue)]"
+                >
+                  <Icon size={17} strokeWidth={1.9} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
           <Link
             href="/nop-bai"
-            className="rounded-md bg-[var(--nav-blue)] px-4 py-2 text-sm font-semibold text-white"
+            className="hidden rounded-[4px] bg-[var(--uel-gold)] px-4 py-2.5 text-sm font-extrabold text-[var(--uel-navy)] shadow-sm transition hover:bg-[#ffc84a] md:inline-flex"
           >
             Nộp bài
           </Link>
         </div>
-        <nav className="mt-3 flex gap-2 overflow-x-auto pb-1">
+        <nav className="flex gap-2 overflow-x-auto border-t border-[#edf1f7] px-5 py-2 lg:hidden">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="shrink-0 rounded-md border border-[#dbe6f7] bg-white px-3 py-2 text-sm text-[var(--muted)]"
+              className="shrink-0 rounded-[4px] border border-[#dbe4f1] bg-white px-3 py-2 text-sm font-semibold text-slate-600"
             >
               {item.label}
             </Link>
           ))}
         </nav>
       </header>
-      <main className="lg:pl-[116px]">{children}</main>
+      <main>{children}</main>
     </div>
+  );
+}
+
+function BrandMark() {
+  return (
+    <span className="relative grid h-14 w-14 flex-none place-items-center overflow-hidden rounded-full bg-[var(--nav-blue)] text-white shadow-lg shadow-[#004b93]/20">
+      <span className="absolute inset-x-0 top-0 h-2 bg-[var(--uel-gold)]" />
+      <span className="font-serif text-lg font-extrabold">UEL</span>
+    </span>
   );
 }

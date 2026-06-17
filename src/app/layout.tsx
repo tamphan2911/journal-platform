@@ -15,9 +15,9 @@ const notoSerif = Noto_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Chuyên san Khoa học | Nền tảng tạp chí học thuật",
+  title: "Chuyên san Khoa học Kinh tế - Luật | UEL",
   description:
-    "Nền tảng tạp chí học thuật tiếng Việt cho nộp bài, phản biện, biên tập, quản trị và lưu trữ số xuất bản.",
+    "Nền tảng tạp chí học thuật của Trường Đại học Kinh tế - Luật cho nộp bài, phản biện, biên tập, quản trị và lưu trữ số xuất bản.",
 };
 
 export default function RootLayout({
