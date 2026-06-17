@@ -55,3 +55,8 @@ export const registerSchema = z
 export const resetRequestSchema = z.object({
   email: z.email("Please enter a valid email address.").transform((value) => value.toLowerCase()),
 });
+
+export const loginSchema = z.object({
+  email: z.email("Please enter a valid email address.").transform((value) => value.toLowerCase()),
+  password: z.string().min(1, "Please enter your password."),
+});
