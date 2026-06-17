@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro, Noto_Serif } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 
 const beVietnam = Be_Vietnam_Pro({
   variable: "--font-be-vietnam",
   subsets: ["latin", "vietnamese"],
   weight: ["400", "500", "600", "700", "800"],
-});
-
-const notoSerif = Noto_Serif({
-  variable: "--font-noto-serif",
-  subsets: ["latin", "vietnamese"],
-  weight: ["500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -26,10 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="vi"
-      className={`${beVietnam.variable} ${notoSerif.variable} h-full antialiased`}
-    >
+    <html lang="vi" className={`${beVietnam.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

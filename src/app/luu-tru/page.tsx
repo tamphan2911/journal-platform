@@ -18,7 +18,7 @@ export default function ArchivePage() {
           <aside className="space-y-5">
             <div>
               <p className="section-kicker">Lưu trữ</p>
-              <h1 className="gold-rule mt-2 font-serif text-5xl font-extrabold text-[var(--uel-navy)]">
+              <h1 className="gold-rule mt-2 text-5xl font-extrabold text-[var(--uel-navy)]">
                 Các số đã xuất bản
               </h1>
             </div>
@@ -49,7 +49,7 @@ export default function ArchivePage() {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <StatusPill tone="green">Đã xuất bản</StatusPill>
-                  <h2 className="mt-3 font-serif text-4xl font-bold text-[var(--uel-navy)]">Tập 12, Số 2, 2026</h2>
+                  <h2 className="mt-3 text-4xl font-bold text-[var(--uel-navy)]">Tập 12, Số 2, 2026</h2>
                   <p className="mt-2 text-[var(--muted)]">
                     Dữ liệu, chính sách và chuyển đổi số - xuất bản ngày 30/06/2026
                   </p>

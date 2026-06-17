@@ -9,7 +9,7 @@ export default function SubmitPage() {
       <section className="mx-auto grid min-h-screen w-full max-w-[1320px] gap-8 px-4 py-8 md:px-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:py-12">
         <main>
           <p className="section-kicker">Nộp bài trực tuyến</p>
-          <h1 className="gold-rule mt-2 max-w-3xl font-serif text-5xl font-extrabold leading-tight text-[var(--uel-navy)]">
+          <h1 className="gold-rule mt-2 max-w-3xl text-5xl font-extrabold leading-tight text-[var(--uel-navy)]">
             Gửi bản thảo cho tòa soạn
           </h1>
           <p className="mt-4 max-w-2xl text-[var(--muted)]">
@@ -24,7 +24,7 @@ export default function SubmitPage() {
             <div className="grid h-12 w-12 place-items-center rounded-[4px] bg-[#e8f0fb] text-[var(--nav-blue)]">
               <UploadCloud />
             </div>
-            <h2 className="mt-5 font-serif text-2xl font-bold text-[var(--uel-navy)]">Checklist hồ sơ</h2>
+            <h2 className="mt-5 text-2xl font-bold text-[var(--uel-navy)]">Checklist hồ sơ</h2>
             <div className="mt-5 space-y-3">
               {[
                 "Bản thảo ẩn danh định dạng DOCX hoặc PDF",
@@ -43,7 +43,7 @@ export default function SubmitPage() {
           <div className="panel p-5">
             <div className="flex items-center gap-3">
               <FileUp className="text-[var(--cyan)]" />
-              <h2 className="font-serif text-2xl font-bold text-[var(--uel-navy)]">Trạng thái sau nộp</h2>
+              <h2 className="text-2xl font-bold text-[var(--uel-navy)]">Trạng thái sau nộp</h2>
             </div>
             <div className="mt-5 space-y-3">
               <StatusPill tone="blue">SUBMITTED</StatusPill>

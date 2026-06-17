@@ -29,7 +29,7 @@ export default function AuthorGuidePage() {
           </main>
           <aside className="panel p-5">
             <UploadCloud className="text-[var(--nav-blue)]" />
-            <h2 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">Checklist nộp bài</h2>
+            <h2 className="mt-4 text-2xl font-bold text-[var(--uel-navy)]">Checklist nộp bài</h2>
             <div className="mt-5 space-y-3">
               {checklist.map((item) => (
                 <div key={item} className="flex gap-3 rounded-[4px] border border-[#dbe6f7] p-3 text-sm leading-6 text-[var(--muted)]">

@@ -35,7 +35,7 @@ export default function AdminWorkspacePage() {
             return (
             <article key={item.title} className="panel p-5">
               <Icon className="text-[var(--nav-blue)]" size={26} />
-              <h2 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h2>
+              <h2 className="mt-4 text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h2>
               <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.text}</p>
             </article>
             );

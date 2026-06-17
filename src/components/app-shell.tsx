@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span className="block truncate text-[10px] font-extrabold uppercase text-[var(--nav-blue)]">
                 UEL Journal Platform
               </span>
-              <span className="block truncate font-serif text-lg font-bold leading-5 text-[var(--uel-navy)] md:text-xl">
+              <span className="block truncate text-lg font-bold leading-5 text-[var(--uel-navy)] md:text-xl">
                 {journalName}
               </span>
             </span>
@@ -92,7 +92,7 @@ function BrandMark() {
   return (
     <span className="relative grid h-11 w-11 flex-none place-items-center overflow-hidden rounded-[6px] bg-[var(--nav-blue)] text-white shadow-md shadow-[#004b93]/16">
       <span className="absolute inset-x-0 top-0 h-1.5 bg-[var(--uel-gold)]" />
-      <span className="font-serif text-sm font-extrabold">UEL</span>
+      <span className="text-sm font-extrabold">UEL</span>
     </span>
   );
 }

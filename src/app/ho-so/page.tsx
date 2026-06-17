@@ -14,10 +14,10 @@ export default function ProfilePage() {
         />
         <div className="mt-8 grid gap-6 lg:grid-cols-[360px_1fr]">
           <aside className="panel p-5">
-            <div className="grid h-16 w-16 place-items-center rounded-[6px] bg-[var(--nav-blue)] font-serif text-xl font-extrabold text-white">
+            <div className="grid h-16 w-16 place-items-center rounded-[6px] bg-[var(--nav-blue)] text-xl font-extrabold text-white">
               NA
             </div>
-            <h2 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">Nguyễn Minh Anh</h2>
+            <h2 className="mt-4 text-2xl font-bold text-[var(--uel-navy)]">Nguyễn Minh Anh</h2>
             <p className="mt-2 text-sm text-[var(--muted)]">Tác giả</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <StatusPill tone="green">Email đã xác minh</StatusPill>

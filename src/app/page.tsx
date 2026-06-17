@@ -12,7 +12,7 @@ export default function Home() {
         <div className="space-y-6">
           <div className="panel p-5 md:p-7">
             <p className="section-kicker">Quy trình xuất bản</p>
-            <h2 className="gold-rule mt-2 font-serif text-4xl font-bold text-[var(--uel-navy)]">
+            <h2 className="gold-rule mt-2 text-4xl font-bold text-[var(--uel-navy)]">
               Từ bản thảo đến công bố
             </h2>
             <div className="mt-8 grid gap-3 md:grid-cols-4">
@@ -49,7 +49,7 @@ export default function Home() {
               return (
                 <article key={item.title} className="panel p-5">
                   <Icon className="text-[var(--nav-blue)]" size={30} />
-                  <h3 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h3>
+                  <h3 className="mt-4 text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.text}</p>
                 </article>
               );
@@ -59,7 +59,7 @@ export default function Home() {
 
         <aside className="space-y-5">
           <div className="panel p-5">
-            <h2 className="font-serif text-2xl font-bold text-[var(--uel-navy)]">Phân quyền học thuật</h2>
+            <h2 className="text-2xl font-bold text-[var(--uel-navy)]">Phân quyền học thuật</h2>
             <div className="mt-5 space-y-3">
               {roleJurisdictions.map((role) => {
                 const Icon = role.icon;

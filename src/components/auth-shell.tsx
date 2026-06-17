@@ -26,7 +26,7 @@ export function AuthShell({
           }`}
         >
           <div className="border-b border-[#dbe6f7] px-5 py-4">
-            <h1 className="font-serif text-3xl font-extrabold text-[var(--uel-navy)]">{title}</h1>
+            <h1 className="text-3xl font-extrabold text-[var(--uel-navy)]">{title}</h1>
             <p className="mt-1 text-sm leading-6 text-[var(--muted)]">{subtitle}</p>
           </div>
           <div className="px-5 py-4">{children}</div>

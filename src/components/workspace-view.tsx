@@ -49,7 +49,7 @@ export function WorkspaceView({
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.25fr)_360px]">
           <section className="panel overflow-hidden">
             <div className="border-b border-[#dbe6f7] bg-[#fbfcff] p-5">
-              <h2 className="font-serif text-2xl font-bold text-[var(--uel-navy)]">Hồ sơ đang xử lý</h2>
+              <h2 className="text-2xl font-bold text-[var(--uel-navy)]">Hồ sơ đang xử lý</h2>
             </div>
             <div className="divide-y divide-[#dbe6f7]">
               {manuscripts.map((item) => (
@@ -81,7 +81,7 @@ export function WorkspaceView({
 
           <aside className="panel p-5">
             <StatusPill tone="blue">{role}</StatusPill>
-            <h2 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">
+            <h2 className="mt-4 text-2xl font-bold text-[var(--uel-navy)]">
               Tác vụ ưu tiên
             </h2>
             <div className="mt-5 space-y-3">
