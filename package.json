@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && npm run standalone:assets",
-    "standalone:assets": "mkdir -p .next/standalone/.next && cp -R .next/static .next/standalone/.next/static && cp -R public .next/standalone/public",
+    "standalone:assets": "node scripts/copy-standalone-assets.mjs",
     "start": "node .next/standalone/server.js",
     "lint": "eslint",
     "postinstall": "prisma generate",
