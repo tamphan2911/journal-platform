@@ -12,22 +12,47 @@ type RegisterState =
   | { status: "success"; message: string; fieldErrors?: FieldErrors }
   | { status: "error"; fieldErrors?: FieldErrors; message: string };
 
+type MatchWarnings = {
+  email?: string;
+  password?: string;
+};
+
 const professionLabels = [
-  { value: "student", label: "Sinh viên" },
-  { value: "lecturer", label: "Giảng viên" },
-  { value: "researcher", label: "Nhà nghiên cứu" },
-  { value: "practitioner", label: "Người hành nghề" },
-  { value: "other", label: "Khác" },
+  { value: "student", label: "Student" },
+  { value: "lecturer", label: "Lecturer" },
+  { value: "researcher", label: "Researcher" },
+  { value: "practitioner", label: "Practitioner" },
+  { value: "other", label: "Other" },
 ];
 
 export function RegisterForm() {
   const [profession, setProfession] = useState("student");
   const [state, setState] = useState<RegisterState>({ status: "idle" });
+  const [matchWarnings, setMatchWarnings] = useState<MatchWarnings>({});
 
   const fieldErrors = useMemo(() => state.fieldErrors ?? {}, [state]);
 
+  function updateMatchWarnings(form: HTMLFormElement) {
+    const email = String(new FormData(form).get("email") ?? "");
+    const confirmEmail = String(new FormData(form).get("confirmEmail") ?? "");
+    const password = String(new FormData(form).get("password") ?? "");
+    const confirmPassword = String(new FormData(form).get("confirmPassword") ?? "");
+
+    setMatchWarnings({
+      email:
+        email && confirmEmail && email.toLowerCase() !== confirmEmail.toLowerCase()
+          ? "Email and confirm email must match."
+          : undefined,
+      password:
+        password && confirmPassword && password !== confirmPassword
+          ? "Password and confirm password must match."
+          : undefined,
+    });
+  }
+
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    updateMatchWarnings(event.currentTarget);
     setState({ status: "loading" });
 
     const form = new FormData(event.currentTarget);
@@ -36,7 +61,6 @@ export function RegisterForm() {
       confirmEmail: String(form.get("confirmEmail") ?? ""),
       firstName: String(form.get("firstName") ?? ""),
       lastName: String(form.get("lastName") ?? ""),
-      organization: String(form.get("organization") ?? ""),
       affiliation: String(form.get("affiliation") ?? ""),
       profession: String(form.get("profession") ?? ""),
       studentId: String(form.get("studentId") ?? ""),
@@ -50,7 +74,7 @@ export function RegisterForm() {
     if (!clientParsed.success) {
       setState({
         status: "error",
-        message: "Vui lòng kiểm tra các trường được đánh dấu.",
+        message: "Please check the highlighted fields.",
         fieldErrors: clientParsed.error.flatten().fieldErrors,
       });
       return;
@@ -66,7 +90,7 @@ export function RegisterForm() {
     if (!response.ok) {
       setState({
         status: "error",
-        message: result?.error ?? "Không thể tạo tài khoản.",
+        message: result?.error ?? "Unable to create account.",
         fieldErrors: result?.fieldErrors,
       });
       return;
@@ -74,23 +98,56 @@ export function RegisterForm() {
 
     setState({
       status: "success",
-      message: result?.message ?? "Đăng ký thành công. Vui lòng xác minh email.",
+      message: result?.message ?? "Registration successful. Please verify your email.",
     });
+    setMatchWarnings({});
     event.currentTarget.reset();
     setProfession("student");
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3" noValidate>
+    <form
+      onSubmit={onSubmit}
+      onChange={(event) => updateMatchWarnings(event.currentTarget)}
+      className="space-y-3"
+      noValidate
+    >
       <div className="grid gap-3 md:grid-cols-2">
-        <Field name="email" label="Email" type="email" error={fieldErrors.email?.[0]} />
-        <Field name="confirmEmail" label="Xác nhận email" type="email" error={fieldErrors.confirmEmail?.[0]} />
-        <Field name="firstName" label="Tên" error={fieldErrors.firstName?.[0]} />
-        <Field name="lastName" label="Họ" error={fieldErrors.lastName?.[0]} />
-        <Field name="organization" label="Trường/đơn vị" error={fieldErrors.organization?.[0]} />
-        <Field name="affiliation" label="Khoa/bộ phận" error={fieldErrors.affiliation?.[0]} />
+        <Field
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="your.name@university.edu"
+          error={fieldErrors.email?.[0]}
+        />
+        <Field
+          name="confirmEmail"
+          label="Confirm email"
+          type="email"
+          placeholder="your.name@university.edu"
+          error={matchWarnings.email ?? fieldErrors.confirmEmail?.[0]}
+        />
+        <Field
+          name="firstName"
+          label="First name"
+          placeholder="Minh"
+          error={fieldErrors.firstName?.[0]}
+        />
+        <Field
+          name="lastName"
+          label="Last name"
+          placeholder="Nguyen"
+          error={fieldErrors.lastName?.[0]}
+        />
+        <Field
+          className="md:col-span-2"
+          name="affiliation"
+          label="Affiliation"
+          placeholder="University of Economics and Law"
+          error={fieldErrors.affiliation?.[0]}
+        />
         <label className="block">
-          <span className="text-xs font-bold text-[var(--uel-navy)]">Nghề nghiệp</span>
+          <span className="text-xs font-bold text-[var(--uel-navy)]">Profession</span>
           <select
             className="field mt-1 min-h-10 py-2 text-sm"
             name="profession"
@@ -108,20 +165,44 @@ export function RegisterForm() {
         </label>
         {profession === "student" && (
           <>
-            <Field name="studentId" label="Mã số sinh viên" error={fieldErrors.studentId?.[0]} />
-            <Field name="major" label="Ngành học" error={fieldErrors.major?.[0]} />
+            <Field
+              name="studentId"
+              label="Student ID"
+              placeholder="UEL20260001"
+              error={fieldErrors.studentId?.[0]}
+            />
+            <Field
+              name="major"
+              label="Major"
+              placeholder="Public policy"
+              error={fieldErrors.major?.[0]}
+            />
           </>
         )}
-        <Field name="password" label="Mật khẩu" type="password" error={fieldErrors.password?.[0]} />
-        <Field name="confirmPassword" label="Xác nhận mật khẩu" type="password" error={fieldErrors.confirmPassword?.[0]} />
+        <div className="grid gap-3 md:col-span-2 md:grid-cols-2">
+          <Field
+            name="password"
+            label="Password"
+            type="password"
+            placeholder="At least 8 characters"
+            error={fieldErrors.password?.[0]}
+          />
+          <Field
+            name="confirmPassword"
+            label="Confirm password"
+            type="password"
+            placeholder="Repeat your password"
+            error={matchWarnings.password ?? fieldErrors.confirmPassword?.[0]}
+          />
+        </div>
       </div>
 
       <label className="flex gap-2 rounded-[4px] border border-[#dbe6f7] bg-[#fbfcff] p-3">
-        <input className="mt-1" type="checkbox" name="termsAccepted" required />
+        <input className="mt-1" type="checkbox" name="termsAccepted" />
         <span className="text-xs leading-5 text-[var(--muted)]">
-          Tôi đồng ý với{" "}
+          I agree with the{" "}
           <Link className="font-bold text-[var(--nav-blue)]" href="/dieu-khoan" target="_blank">
-            điều khoản và điều kiện
+            terms and conditions
           </Link>
           .
           <ErrorMessage message={fieldErrors.termsAccepted?.[0]} />
@@ -143,7 +224,7 @@ export function RegisterForm() {
         className="w-full rounded-[4px] bg-[var(--nav-blue)] px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-[var(--uel-navy)] disabled:opacity-60"
         disabled={state.status === "loading"}
       >
-        {state.status === "loading" ? "Đang tạo tài khoản..." : "Tạo tài khoản"}
+        {state.status === "loading" ? "Creating account..." : "Create account"}
       </button>
     </form>
   );
@@ -153,17 +234,27 @@ function Field({
   name,
   label,
   type = "text",
+  placeholder,
   error,
+  className = "",
 }: {
   name: string;
   label: string;
   type?: string;
+  placeholder: string;
   error?: string;
+  className?: string;
 }) {
   return (
-    <label className="block">
+    <label className={`block ${className}`}>
       <span className="text-xs font-bold text-[var(--uel-navy)]">{label}</span>
-      <input className="field mt-1 min-h-10 py-2 text-sm" name={name} type={type} required />
+      <input
+        className="field mt-1 min-h-10 py-2 text-sm"
+        name={name}
+        type={type}
+        required
+        placeholder={placeholder}
+      />
       <ErrorMessage message={error} />
     </label>
   );

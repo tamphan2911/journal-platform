@@ -6,6 +6,7 @@ export default function RegisterPage() {
   return (
     <AuthShell
       wide
+      scrollable
       title="Đăng ký tài khoản"
       subtitle="Tài khoản mới cần xác minh email trước khi được kích hoạt."
     >

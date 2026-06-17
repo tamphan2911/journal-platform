@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Thông tin đăng ký chưa hợp lệ.", fieldErrors: parsed.error.flatten().fieldErrors },
+      { error: "Registration information is invalid.", fieldErrors: parsed.error.flatten().fieldErrors },
       { status: 422 },
     );
   }
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   if (existingUser) {
     return NextResponse.json(
-      { error: "Email này đã được đăng ký.", fieldErrors: { email: ["Email này đã được đăng ký."] } },
+      { error: "This email is already registered.", fieldErrors: { email: ["This email is already registered."] } },
       { status: 409 },
     );
   }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       lastName: data.lastName,
       name: `${data.firstName} ${data.lastName}`,
       role: "USER",
-      organization: data.organization,
+      organization: data.affiliation,
       affiliation: data.affiliation,
       profession: data.profession,
       studentId: data.profession === "student" ? data.studentId : null,
@@ -62,13 +62,13 @@ export async function POST(request: Request) {
 
   await sendMail({
     to: user.email,
-    subject: "Xác minh tài khoản Chuyên san",
-    text: `Vui lòng xác minh tài khoản bằng liên kết sau: ${verificationUrl}`,
+    subject: "Verify your journal platform account",
+    text: `Please verify your account with this link: ${verificationUrl}`,
   });
 
   return NextResponse.json(
     {
-      message: "Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản.",
+      message: "Registration successful. Please check your email to verify and activate your account.",
       verificationPending: true,
     },
     { status: 201 },

@@ -4,25 +4,24 @@ export const professionOptions = ["student", "lecturer", "researcher", "practiti
 
 export const registerSchema = z
   .object({
-    email: z.email("Vui lòng nhập email hợp lệ.").transform((value) => value.toLowerCase()),
-    confirmEmail: z.email("Vui lòng xác nhận email hợp lệ.").transform((value) => value.toLowerCase()),
-    firstName: z.string().trim().min(1, "Vui lòng nhập tên."),
-    lastName: z.string().trim().min(1, "Vui lòng nhập họ."),
-    organization: z.string().trim().min(1, "Vui lòng nhập trường/đơn vị."),
-    affiliation: z.string().trim().min(1, "Vui lòng nhập khoa/bộ phận/chuyên ngành."),
-    profession: z.enum(professionOptions, "Vui lòng chọn nghề nghiệp."),
+    email: z.email("Please enter a valid email address.").transform((value) => value.toLowerCase()),
+    confirmEmail: z.email("Please confirm with a valid email address.").transform((value) => value.toLowerCase()),
+    firstName: z.string().trim().min(1, "Please enter your first name."),
+    lastName: z.string().trim().min(1, "Please enter your last name."),
+    affiliation: z.string().trim().min(1, "Please enter your university or organization."),
+    profession: z.enum(professionOptions, "Please select your profession."),
     studentId: z.string().trim().optional(),
     major: z.string().trim().optional(),
-    password: z.string().min(8, "Mật khẩu phải có ít nhất 8 ký tự."),
-    confirmPassword: z.string().min(1, "Vui lòng xác nhận mật khẩu."),
-    termsAccepted: z.boolean().refine((value) => value, "Bạn cần đồng ý với điều khoản sử dụng."),
+    password: z.string().min(8, "Password must contain at least 8 characters."),
+    confirmPassword: z.string().min(1, "Please confirm your password."),
+    termsAccepted: z.boolean().refine((value) => value, "You must agree with the terms and conditions."),
   })
   .superRefine((data, ctx) => {
     if (data.email !== data.confirmEmail) {
       ctx.addIssue({
         code: "custom",
         path: ["confirmEmail"],
-        message: "Email xác nhận không khớp.",
+        message: "Email and confirm email must match.",
       });
     }
 
@@ -30,7 +29,7 @@ export const registerSchema = z
       ctx.addIssue({
         code: "custom",
         path: ["confirmPassword"],
-        message: "Mật khẩu xác nhận không khớp.",
+        message: "Password and confirm password must match.",
       });
     }
 
@@ -39,7 +38,7 @@ export const registerSchema = z
         ctx.addIssue({
           code: "custom",
           path: ["studentId"],
-          message: "Vui lòng nhập mã số sinh viên.",
+          message: "Please enter your student ID.",
         });
       }
 
@@ -47,12 +46,12 @@ export const registerSchema = z
         ctx.addIssue({
           code: "custom",
           path: ["major"],
-          message: "Vui lòng nhập ngành học.",
+          message: "Please enter your major.",
         });
       }
     }
   });
 
 export const resetRequestSchema = z.object({
-  email: z.email("Vui lòng nhập email hợp lệ.").transform((value) => value.toLowerCase()),
+  email: z.email("Please enter a valid email address.").transform((value) => value.toLowerCase()),
 });
