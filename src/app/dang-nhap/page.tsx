@@ -1,38 +1,36 @@
 import Link from "next/link";
-import { LockKeyhole } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
-import { PageHeader } from "@/components/page-header";
+import { AuthShell } from "@/components/auth-shell";
 
 export default function LoginPage() {
   return (
-    <AppShell>
-      <section className="mx-auto grid min-h-screen max-w-[1180px] gap-8 px-4 py-8 md:px-8 lg:grid-cols-[1fr_420px] lg:py-12">
-        <PageHeader
-          kicker="Đăng nhập"
-          title="Vào không gian làm việc của tạp chí"
-          description="Tài khoản được dùng cho tác giả, phản biện, biên tập viên, tổng biên tập và quản trị hệ thống."
-        />
-        <form className="panel p-5 md:p-6">
-          <LockKeyhole className="text-[var(--nav-blue)]" />
-          <label className="mt-5 block">
-            <span className="text-sm font-bold text-[var(--uel-navy)]">Email</span>
-            <input className="field mt-2" type="email" placeholder="ten@truong.edu.vn" />
-          </label>
-          <label className="mt-5 block">
-            <span className="text-sm font-bold text-[var(--uel-navy)]">Mật khẩu</span>
-            <input className="field mt-2" type="password" placeholder="••••••••" />
-          </label>
-          <button className="mt-6 w-full rounded-[4px] bg-[var(--nav-blue)] px-4 py-3 text-sm font-extrabold text-white">
-            Đăng nhập
-          </button>
-          <p className="mt-4 text-sm text-[var(--muted)]">
-            Chưa có tài khoản?{" "}
-            <Link className="font-bold text-[var(--nav-blue)]" href="/dang-ky">
-              Đăng ký tại đây
-            </Link>
-          </p>
-        </form>
-      </section>
-    </AppShell>
+    <AuthShell title="Đăng nhập" subtitle="Vào workspace theo vai trò học thuật của bạn.">
+      <form className="space-y-4">
+        <label className="block">
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Email</span>
+          <input className="field mt-2" type="email" required placeholder="ten@truong.edu.vn" />
+        </label>
+        <label className="block">
+          <span className="text-sm font-bold text-[var(--uel-navy)]">Mật khẩu</span>
+          <input className="field mt-2" type="password" required placeholder="••••••••" />
+        </label>
+        <div className="flex items-center justify-between gap-3 text-sm">
+          <Link className="font-bold text-[var(--nav-blue)]" href="/dat-lai-mat-khau">
+            Quên mật khẩu?
+          </Link>
+          <Link className="font-bold text-[var(--nav-blue)]" href="/tai-khoan-mau">
+            Tài khoản mẫu
+          </Link>
+        </div>
+        <button className="w-full rounded-[4px] bg-[var(--nav-blue)] px-4 py-3 text-sm font-extrabold text-white">
+          Đăng nhập
+        </button>
+      </form>
+      <p className="mt-4 text-center text-sm text-[var(--muted)]">
+        Chưa có tài khoản?{" "}
+        <Link className="font-bold text-[var(--nav-blue)]" href="/dang-ky">
+          Đăng ký
+        </Link>
+      </p>
+    </AuthShell>
   );
 }

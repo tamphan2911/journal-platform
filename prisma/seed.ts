@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { hashPassword } from "../src/lib/auth-utils";
+import { demoAccounts } from "../src/lib/demo-accounts";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({
@@ -8,52 +10,57 @@ const prisma = new PrismaClient({
   }),
 });
 
+async function seedUsers() {
+  const users = new Map<string, Awaited<ReturnType<typeof prisma.user.upsert>>>();
+
+  for (const account of demoAccounts) {
+    const user = await prisma.user.upsert({
+      where: { email: account.email },
+      update: {
+        passwordHash: hashPassword(account.password),
+        firstName: account.firstName,
+        lastName: account.lastName,
+        name: `${account.firstName} ${account.lastName}`,
+        role: account.role,
+        organization: account.organization,
+        affiliation: account.affiliation,
+        profession: account.profession,
+        isActive: true,
+        emailVerifiedAt: new Date("2026-06-17T00:00:00.000Z"),
+        termsAcceptedAt: new Date("2026-06-17T00:00:00.000Z"),
+      },
+      create: {
+        email: account.email,
+        passwordHash: hashPassword(account.password),
+        firstName: account.firstName,
+        lastName: account.lastName,
+        name: `${account.firstName} ${account.lastName}`,
+        role: account.role,
+        organization: account.organization,
+        affiliation: account.affiliation,
+        profession: account.profession,
+        isActive: true,
+        emailVerifiedAt: new Date("2026-06-17T00:00:00.000Z"),
+        termsAcceptedAt: new Date("2026-06-17T00:00:00.000Z"),
+      },
+    });
+
+    users.set(account.email, user);
+  }
+
+  return users;
+}
+
 async function main() {
-  const admin = await prisma.user.upsert({
-    where: { email: "admin@chuyensan.vn" },
-    update: {},
-    create: {
-      email: "admin@chuyensan.vn",
-      name: "Ban quản trị Chuyên san",
-      role: "ADMIN",
-      affiliation: "Tòa soạn Chuyên san Khoa học",
-    },
-  });
+  const users = await seedUsers();
+  const admin = users.get("admin@chuyensan.vn");
+  const chiefEditor = users.get("chief.editor@chuyensan.vn");
+  const reviewer = users.get("reviewer@chuyensan.vn");
+  const author = users.get("author@example.edu.vn");
 
-  const editor = await prisma.user.upsert({
-    where: { email: "editor@chuyensan.vn" },
-    update: {},
-    create: {
-      email: "editor@chuyensan.vn",
-      name: "PGS. TS. Lê Hoài Nam",
-      role: "EDITOR_IN_CHIEF",
-      affiliation: "Hội đồng biên tập",
-      expertise: ["Giáo dục", "Chính sách công", "Xuất bản khoa học"],
-    },
-  });
-
-  const reviewer = await prisma.user.upsert({
-    where: { email: "reviewer@chuyensan.vn" },
-    update: {},
-    create: {
-      email: "reviewer@chuyensan.vn",
-      name: "TS. Trần Bảo Châu",
-      role: "REVIEWER",
-      affiliation: "Viện Nghiên cứu Dữ liệu",
-      expertise: ["Kinh tế số", "Dữ liệu mở"],
-    },
-  });
-
-  const author = await prisma.user.upsert({
-    where: { email: "author@example.edu.vn" },
-    update: {},
-    create: {
-      email: "author@example.edu.vn",
-      name: "Nguyễn Minh Anh",
-      role: "AUTHOR",
-      affiliation: "Trường Đại học Khoa học",
-    },
-  });
+  if (!admin || !chiefEditor || !reviewer || !author) {
+    throw new Error("Demo accounts were not seeded correctly.");
+  }
 
   const issue = await prisma.journalIssue.upsert({
     where: {
@@ -63,13 +70,18 @@ async function main() {
         year: 2026,
       },
     },
-    update: {},
+    update: {
+      title: "Tập 12, Số 2, 2026",
+      theme: "Dữ liệu, chính sách và chuyển đổi số",
+      status: "PUBLISHED",
+      publishedAt: new Date("2026-06-30T00:00:00.000Z"),
+    },
     create: {
       volume: 12,
       number: 2,
       year: 2026,
       title: "Tập 12, Số 2, 2026",
-      theme: "Dữ liệu, giáo dục và đổi mới",
+      theme: "Dữ liệu, chính sách và chuyển đổi số",
       status: "PUBLISHED",
       publishedAt: new Date("2026-06-30T00:00:00.000Z"),
     },
@@ -77,7 +89,17 @@ async function main() {
 
   const accepted = await prisma.manuscript.upsert({
     where: { code: "CS-2026-006" },
-    update: {},
+    update: {
+      title: "Đạo đức AI trong phân tích dữ liệu khoa học xã hội",
+      abstract:
+        "Bài viết phân tích các nguyên tắc đạo đức khi sử dụng hệ thống AI trong nghiên cứu khoa học xã hội, nhấn mạnh tính minh bạch, trách nhiệm giải trình và bảo vệ dữ liệu cá nhân.",
+      field: "Công nghệ",
+      keywords: ["AI", "đạo đức nghiên cứu", "dữ liệu xã hội"],
+      status: "PUBLISHED",
+      authorId: author.id,
+      handlingEditorId: chiefEditor.id,
+      issueId: issue.id,
+    },
     create: {
       code: "CS-2026-006",
       title: "Đạo đức AI trong phân tích dữ liệu khoa học xã hội",
@@ -87,7 +109,7 @@ async function main() {
       keywords: ["AI", "đạo đức nghiên cứu", "dữ liệu xã hội"],
       status: "PUBLISHED",
       authorId: author.id,
-      handlingEditorId: editor.id,
+      handlingEditorId: chiefEditor.id,
       issueId: issue.id,
       files: {
         create: {
@@ -100,7 +122,7 @@ async function main() {
       },
       decisions: {
         create: {
-          editorId: editor.id,
+          editorId: chiefEditor.id,
           type: "PUBLISH",
           note: "Đủ điều kiện công bố trong số 2/2026.",
         },
@@ -117,7 +139,13 @@ async function main() {
 
   await prisma.review.upsert({
     where: { id: "seed-review-ai-ethics" },
-    update: {},
+    update: {
+      manuscriptId: accepted.id,
+      reviewerId: reviewer.id,
+      recommendation: "MINOR_REVISION",
+      comments: "Bài viết có đóng góp rõ, cần làm rõ phương pháp chọn tình huống.",
+      submittedAt: new Date("2026-06-12T00:00:00.000Z"),
+    },
     create: {
       id: "seed-review-ai-ethics",
       manuscriptId: accepted.id,
@@ -132,7 +160,15 @@ async function main() {
 
   await prisma.article.upsert({
     where: { slug: "dao-duc-ai-du-lieu-khoa-hoc-xa-hoi" },
-    update: {},
+    update: {
+      title: accepted.title,
+      abstract: accepted.abstract,
+      authors: ["Phạm Quốc Huy"],
+      pages: "47-62",
+      doi: "10.5555/cs.2026.006",
+      pdfUrl: "/articles/cs-2026-006.pdf",
+      publishedAt: new Date("2026-06-30T00:00:00.000Z"),
+    },
     create: {
       manuscriptId: accepted.id,
       issueId: issue.id,
