@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f8fb;
+  --background: #eef3f8;
   --foreground: #12213f;
-  --page-bg: #f7f8fb;
+  --page-bg: #eef3f8;
   --ink: #12213f;
   --muted: #667085;
   --nav-blue: #004b93;
@@ -67,9 +67,7 @@ select {
 }
 
 .academic-band {
-  background:
-    radial-gradient(circle at 82% 12%, rgba(243, 178, 26, 0.26), transparent 32%),
-    linear-gradient(135deg, rgba(0, 75, 147, 0.98), rgba(0, 43, 92, 0.96));
+  background: linear-gradient(135deg, rgba(0, 75, 147, 0.98), rgba(0, 43, 92, 0.96));
 }
 
 .paper-grid {

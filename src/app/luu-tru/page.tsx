@@ -13,7 +13,7 @@ const issues = [
 export default function ArchivePage() {
   return (
     <AppShell>
-      <section className="mx-auto min-h-screen w-full max-w-[1320px] px-5 py-8 md:px-8 lg:px-12 lg:py-12">
+      <section className="mx-auto min-h-screen w-full max-w-[1320px] px-4 py-8 md:px-8 lg:py-12">
         <div className="grid gap-8 lg:grid-cols-[360px_1fr]">
           <aside className="space-y-5">
             <div>
@@ -28,27 +28,14 @@ export default function ArchivePage() {
               </label>
               <div className="mt-3 flex items-center gap-2 rounded-[4px] border border-[#cfdbef] bg-white px-3">
                 <Search size={18} className="text-[var(--muted)]" />
-                <input
-                  id="archive-search"
-                  className="min-h-11 flex-1 bg-transparent text-sm outline-none"
-                  placeholder="Tên bài, tác giả, DOI"
-                />
+                <input id="archive-search" className="min-h-11 flex-1 bg-transparent text-sm outline-none" placeholder="Tên bài, tác giả, DOI" />
               </div>
             </div>
             <div className="space-y-3">
               {issues.map((issue, index) => (
-                <button
-                  key={`${issue.volume}-${issue.number}`}
-                  className={`w-full rounded-[4px] border p-4 text-left transition ${
-                    index === 0
-                      ? "border-[var(--nav-blue)] bg-white shadow-lg shadow-[#354f96]/12"
-                      : "border-[#dbe6f7] bg-white/72 hover:bg-white"
-                  }`}
-                >
+                <button key={`${issue.volume}-${issue.number}`} className={`w-full rounded-[4px] border p-4 text-left transition ${index === 0 ? "border-[var(--nav-blue)] bg-white shadow-lg shadow-[#354f96]/12" : "border-[#dbe6f7] bg-white/72 hover:bg-white"}`}>
                   <div className="flex items-center justify-between">
-                    <p className="font-extrabold text-[var(--uel-navy)]">
-                      {issue.volume}, {issue.number}
-                    </p>
+                    <p className="font-extrabold text-[var(--uel-navy)]">{issue.volume}, {issue.number}</p>
                     <StatusPill tone={index === 0 ? "green" : "blue"}>{issue.year}</StatusPill>
                   </div>
                   <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{issue.theme}</p>
@@ -62,11 +49,9 @@ export default function ArchivePage() {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <StatusPill tone="green">Đã xuất bản</StatusPill>
-                  <h2 className="mt-3 font-serif text-4xl font-bold text-[var(--uel-navy)]">
-                    Tập 12, Số 2, 2026
-                  </h2>
+                  <h2 className="mt-3 font-serif text-4xl font-bold text-[var(--uel-navy)]">Tập 12, Số 2, 2026</h2>
                   <p className="mt-2 text-[var(--muted)]">
-                    Dữ liệu, chính sách và chuyển đổi số · xuất bản ngày 30/06/2026
+                    Dữ liệu, chính sách và chuyển đổi số - xuất bản ngày 30/06/2026
                   </p>
                 </div>
                 <button className="inline-flex items-center gap-2 rounded-[4px] bg-[var(--nav-blue)] px-4 py-3 text-sm font-bold text-white transition hover:bg-[var(--uel-navy)]">
@@ -83,18 +68,13 @@ export default function ArchivePage() {
                   </div>
                   <div>
                     <StatusPill tone={index % 2 === 0 ? "blue" : "cyan"}>{article.field}</StatusPill>
-                    <h3 className="mt-3 text-xl font-extrabold leading-7 text-[var(--uel-navy)]">
-                      {article.title}
-                    </h3>
+                    <h3 className="mt-3 text-xl font-extrabold leading-7 text-[var(--uel-navy)]">{article.title}</h3>
                     <p className="mt-2 text-sm text-[var(--muted)]">{article.authors}</p>
                     <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-                      Tóm tắt và metadata được lưu trữ để hỗ trợ tìm kiếm, DOI,
-                      chỉ mục hóa và thống kê truy cập.
+                      Tóm tắt và metadata được lưu trữ để hỗ trợ tìm kiếm, DOI, chỉ mục hóa và thống kê truy cập.
                     </p>
                   </div>
-                  <div className="text-sm font-bold text-[var(--nav-blue)]">
-                    Trang {article.pages}
-                  </div>
+                  <div className="text-sm font-bold text-[var(--nav-blue)]">Trang {article.pages}</div>
                 </article>
               ))}
             </div>

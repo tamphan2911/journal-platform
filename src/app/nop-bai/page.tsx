@@ -6,15 +6,15 @@ import { SubmitForm } from "./submit-form";
 export default function SubmitPage() {
   return (
     <AppShell>
-      <section className="mx-auto grid min-h-screen w-full max-w-[1320px] gap-8 px-5 py-8 md:px-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:px-12 lg:py-12">
+      <section className="mx-auto grid min-h-screen w-full max-w-[1320px] gap-8 px-4 py-8 md:px-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:py-12">
         <main>
           <p className="section-kicker">Nộp bài trực tuyến</p>
           <h1 className="gold-rule mt-2 max-w-3xl font-serif text-5xl font-extrabold leading-tight text-[var(--uel-navy)]">
             Gửi bản thảo cho tòa soạn
           </h1>
           <p className="mt-4 max-w-2xl text-[var(--muted)]">
-            Tác giả cung cấp metadata, tệp bản thảo và thư gửi biên tập. Hồ sơ
-            sẽ vào bước sàng lọc hình thức trước khi phân công phản biện.
+            Tác giả cung cấp metadata, tệp bản thảo và thư gửi biên tập. Hồ sơ sẽ vào bước
+            sàng lọc hình thức trước khi phân công phản biện.
           </p>
           <SubmitForm />
         </main>
@@ -48,8 +48,8 @@ export default function SubmitPage() {
             <div className="mt-5 space-y-3">
               <StatusPill tone="blue">SUBMITTED</StatusPill>
               <p className="text-sm leading-6 text-[var(--muted)]">
-                Sau khi nộp thành công, hệ thống sinh mã bản thảo, ghi nhật ký
-                và đưa hồ sơ vào hàng đợi của biên tập viên.
+                Sau khi nộp thành công, hệ thống sinh mã bản thảo, ghi nhật ký và đưa hồ sơ
+                vào hàng đợi của biên tập viên.
               </p>
             </div>
           </div>

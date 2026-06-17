@@ -1,45 +1,97 @@
 import {
   Archive,
+  BookOpenCheck,
   ClipboardCheck,
+  FileCheck2,
   FileSignature,
+  Gauge,
   LayoutDashboard,
   LibraryBig,
+  LockKeyhole,
+  PenLine,
+  Scale,
   ShieldCheck,
   UserCheck,
+  UserCog,
   Users,
 } from "lucide-react";
 
+export const journalName = "Chuyên san Khoa học Kinh tế - Luật";
+
 export const navItems = [
   { href: "/", label: "Tạp chí", icon: LibraryBig },
-  { href: "/nop-bai", label: "Nộp bài", icon: FileSignature },
-  { href: "/dashboard", label: "Điều hành", icon: LayoutDashboard },
+  { href: "/gioi-thieu", label: "Giới thiệu", icon: BookOpenCheck },
   { href: "/luu-tru", label: "Lưu trữ", icon: Archive },
+  { href: "/tac-gia", label: "Tác giả", icon: PenLine },
+  { href: "/phan-bien", label: "Phản biện", icon: ClipboardCheck },
+  { href: "/workspace", label: "Workspace", icon: LayoutDashboard },
 ];
 
-export const roles = [
+export const authLinks = [
+  { href: "/dang-nhap", label: "Đăng nhập", icon: LockKeyhole },
+  { href: "/dang-ky", label: "Đăng ký", icon: UserCheck },
+];
+
+export const roleJurisdictions = [
   {
-    title: "Tác giả",
+    role: "Tác giả",
+    code: "AUTHOR",
     icon: FileSignature,
-    detail: "Nộp bản thảo, theo dõi phản biện, gửi bản sửa và thư giải trình.",
-    stats: "26 hồ sơ",
+    scope: "Hồ sơ và bản thảo của chính mình",
+    permissions: [
+      "Tạo bản thảo nháp và nộp hồ sơ",
+      "Theo dõi trạng thái xử lý",
+      "Gửi bản sửa và thư giải trình",
+      "Xem quyết định biên tập đã công bố cho mình",
+    ],
   },
   {
-    title: "Phản biện",
+    role: "Phản biện",
+    code: "REVIEWER",
     icon: ClipboardCheck,
-    detail: "Nhận lời mời, đọc bản thảo ẩn danh, gửi nhận xét và khuyến nghị.",
-    stats: "14 hạn xử lý",
+    scope: "Bản thảo được mời hoặc được phân công",
+    permissions: [
+      "Nhận hoặc từ chối lời mời phản biện",
+      "Đọc bản thảo ẩn danh",
+      "Gửi nhận xét cho tác giả và ghi chú mật cho biên tập",
+      "Đề xuất chấp nhận, sửa nhỏ, sửa lớn hoặc từ chối",
+    ],
   },
   {
-    title: "Biên tập viên",
+    role: "Biên tập viên",
+    code: "SECTION_EDITOR",
     icon: UserCheck,
-    detail: "Sàng lọc, phân công phản biện, ra quyết định và quản lý vòng sửa.",
-    stats: "9 đang chờ",
+    scope: "Chuyên mục được giao phụ trách",
+    permissions: [
+      "Sàng lọc hình thức và đạo đức công bố",
+      "Mời phản biện và theo dõi hạn xử lý",
+      "Tổng hợp nhận xét và yêu cầu sửa bài",
+      "Đề xuất quyết định cho tổng biên tập",
+    ],
   },
   {
-    title: "Quản trị",
+    role: "Tổng biên tập",
+    code: "EDITOR_IN_CHIEF",
+    icon: Scale,
+    scope: "Toàn bộ quy trình học thuật",
+    permissions: [
+      "Phân công biên tập viên phụ trách",
+      "Ra quyết định gửi phản biện, sửa, chấp nhận hoặc từ chối",
+      "Duyệt bài vào số xuất bản",
+      "Giám sát chất lượng và xung đột lợi ích",
+    ],
+  },
+  {
+    role: "Quản trị",
+    code: "ADMIN",
     icon: ShieldCheck,
-    detail: "Quản lý người dùng, chuyên mục, kỳ xuất bản, chỉ số và nhật ký hệ thống.",
-    stats: "182 người dùng",
+    scope: "Hệ thống, người dùng, cấu hình tạp chí",
+    permissions: [
+      "Quản lý tài khoản, vai trò và trạng thái hoạt động",
+      "Cấu hình chuyên mục, số xuất bản, biểu mẫu",
+      "Xem nhật ký hệ thống và sao lưu dữ liệu",
+      "Khóa phiên đăng nhập hoặc vô hiệu hóa tài khoản",
+    ],
   },
 ];
 
@@ -118,7 +170,7 @@ export const issueArticles = [
 ];
 
 export const metrics = [
-  { label: "Bản thảo mới", value: "35", helper: "189 đã xử lý" },
+  { label: "Bản thảo mới", value: "35", helper: "189 hồ sơ đã xử lý" },
   { label: "Đang phản biện", value: "21", helper: "66% đúng hạn" },
   { label: "Bài đã xuất bản", value: "128", helper: "12 số lưu trữ" },
   { label: "Phản biện viên", value: "74", helper: "18 chuyên ngành" },
@@ -127,16 +179,50 @@ export const metrics = [
 export const workflow = [
   "Tác giả nộp bài",
   "Sàng lọc hình thức",
-  "Phân công phản biện",
+  "Phân công biên tập",
+  "Mời phản biện",
   "Tổng hợp nhận xét",
   "Sửa bài",
   "Quyết định",
   "Xuất bản",
 ];
 
+export const workspaceCards = [
+  {
+    href: "/workspace/author",
+    title: "Không gian tác giả",
+    icon: FileSignature,
+    detail: "Nộp bài, bổ sung hồ sơ, gửi bản sửa và theo dõi từng vòng xử lý.",
+  },
+  {
+    href: "/workspace/reviewer",
+    title: "Không gian phản biện",
+    icon: ClipboardCheck,
+    detail: "Quản lý lời mời, hạn phản biện, biểu mẫu nhận xét và khuyến nghị.",
+  },
+  {
+    href: "/workspace/editor",
+    title: "Không gian biên tập",
+    icon: FileCheck2,
+    detail: "Sàng lọc, phân công phản biện, tổng hợp nhận xét và chuẩn bị quyết định.",
+  },
+  {
+    href: "/workspace/admin",
+    title: "Quản trị hệ thống",
+    icon: UserCog,
+    detail: "Quản lý người dùng, vai trò, chuyên mục, số xuất bản và nhật ký.",
+  },
+];
+
 export const adminTools = [
   { label: "Người dùng", value: "182", icon: Users },
   { label: "Vai trò", value: "5", icon: ShieldCheck },
-  { label: "Kỳ xuất bản", value: "12", icon: Archive },
+  { label: "Số xuất bản", value: "12", icon: Archive },
   { label: "Bản thảo", value: "247", icon: FileSignature },
+];
+
+export const pageStats = [
+  { label: "Thời gian sàng lọc trung vị", value: "11 ngày", icon: Gauge },
+  { label: "Hồ sơ đủ metadata", value: "94%", icon: FileCheck2 },
+  { label: "Tỷ lệ đúng hạn phản biện", value: "66%", icon: ClipboardCheck },
 ];

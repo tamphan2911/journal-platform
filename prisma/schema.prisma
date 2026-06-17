@@ -61,19 +61,51 @@ enum IssueStatus {
 model User {
   id                   String       @id @default(cuid())
   email                String       @unique
+  passwordHash         String?
   name                 String
   role                 Role         @default(AUTHOR)
   affiliation          String?
   expertise            String[]     @default([])
   orcid                String?
   isActive             Boolean      @default(true)
+  emailVerifiedAt      DateTime?
+  lastLoginAt          DateTime?
   authoredManuscripts  Manuscript[] @relation("AuthorSubmissions")
   assignedManuscripts  Manuscript[] @relation("EditorAssignments")
   reviews              Review[]
   decisions            Decision[]
   auditLogs            AuditLog[]
+  sessions             AuthSession[]
+  permissions          UserPermission[]
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @updatedAt
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model UserPermission {
+  id        String   @id @default(cuid())
+  userId    String
+  area      String
+  action    String
+  scope     String   @default("own")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, area, action, scope])
+  @@index([area, action])
 }
 
 model JournalIssue {

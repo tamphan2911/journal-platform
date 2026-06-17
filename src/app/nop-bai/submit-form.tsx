@@ -62,28 +62,16 @@ export function SubmitForm() {
         </label>
         <label className="block">
           <span className="text-sm font-bold text-[var(--uel-navy)]">Email</span>
-          <input
-            className="field mt-2"
-            name="authorEmail"
-            type="email"
-            required
-            placeholder="tacgia@example.edu.vn"
-          />
+          <input className="field mt-2" name="authorEmail" type="email" required placeholder="tacgia@example.edu.vn" />
         </label>
         <label className="block">
           <span className="text-sm font-bold text-[var(--uel-navy)]">Đơn vị công tác</span>
-          <input
-            className="field mt-2"
-            name="affiliation"
-            placeholder="Trường / Viện / Cơ quan"
-          />
+          <input className="field mt-2" name="affiliation" placeholder="Trường / Viện / Cơ quan" />
         </label>
         <label className="block">
           <span className="text-sm font-bold text-[var(--uel-navy)]">Chuyên mục</span>
           <select className="field mt-2" name="field" required defaultValue="">
-            <option value="" disabled>
-              Chọn chuyên mục
-            </option>
+            <option value="" disabled>Chọn chuyên mục</option>
             <option>Quản trị công</option>
             <option>Kinh tế số</option>
             <option>Luật kinh tế</option>
@@ -92,29 +80,14 @@ export function SubmitForm() {
           </select>
         </label>
       </div>
-
       <label className="mt-5 block">
         <span className="text-sm font-bold text-[var(--uel-navy)]">Tên bài viết</span>
-        <input
-          className="field mt-2"
-          name="title"
-          required
-          minLength={12}
-          placeholder="Tên bản thảo bằng tiếng Việt"
-        />
+        <input className="field mt-2" name="title" required minLength={12} placeholder="Tên bản thảo bằng tiếng Việt" />
       </label>
-
       <label className="mt-5 block">
         <span className="text-sm font-bold text-[var(--uel-navy)]">Tóm tắt</span>
-        <textarea
-          className="field mt-2 min-h-[150px]"
-          name="abstract"
-          required
-          minLength={80}
-          placeholder="Mục tiêu, phương pháp, kết quả chính và đóng góp của nghiên cứu"
-        />
+        <textarea className="field mt-2 min-h-[150px]" name="abstract" required minLength={80} placeholder="Mục tiêu, phương pháp, kết quả chính và đóng góp của nghiên cứu" />
       </label>
-
       <div className="mt-5 grid gap-5 md:grid-cols-2">
         <label className="block">
           <span className="text-sm font-bold text-[var(--uel-navy)]">Từ khóa</span>
@@ -125,31 +98,20 @@ export function SubmitForm() {
           <input className="field mt-2 p-2" name="manuscriptFile" type="file" />
         </label>
       </div>
-
       <label className="mt-5 flex gap-3 rounded-[4px] border border-[#dbe6f7] bg-[#fbfcff] p-4">
         <input className="mt-1" type="checkbox" required />
         <span className="text-sm leading-6 text-[var(--muted)]">
-          Tôi xác nhận bản thảo chưa được công bố ở nơi khác, tuân thủ đạo đức
-          nghiên cứu và đồng ý quy trình phản biện của tạp chí.
+          Tôi xác nhận bản thảo chưa được công bố ở nơi khác, tuân thủ đạo đức nghiên cứu
+          và đồng ý quy trình phản biện của tạp chí.
         </span>
       </label>
-
       <div className="mt-6 flex flex-wrap items-center gap-4">
-        <button
-          className="inline-flex items-center gap-2 rounded-[4px] bg-[var(--nav-blue)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#354f96]/20 transition hover:bg-[var(--uel-navy)] disabled:cursor-not-allowed disabled:opacity-60"
-          disabled={state.status === "loading"}
-        >
+        <button className="inline-flex items-center gap-2 rounded-[4px] bg-[var(--nav-blue)] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#354f96]/20 transition hover:bg-[var(--uel-navy)] disabled:cursor-not-allowed disabled:opacity-60" disabled={state.status === "loading"}>
           <Send size={17} />
           {state.status === "loading" ? "Đang nộp..." : "Nộp bản thảo"}
         </button>
-        {state.status === "success" && (
-          <p className="text-sm font-bold text-[#216c37]">
-            Đã nhận hồ sơ. Mã bản thảo: {state.code}
-          </p>
-        )}
-        {state.status === "error" && (
-          <p className="text-sm font-bold text-[#b42318]">{state.message}</p>
-        )}
+        {state.status === "success" && <p className="text-sm font-bold text-[#216c37]">Đã nhận hồ sơ. Mã bản thảo: {state.code}</p>}
+        {state.status === "error" && <p className="text-sm font-bold text-[#b42318]">{state.message}</p>}
       </div>
     </form>
   );
