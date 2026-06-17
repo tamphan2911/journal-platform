@@ -19,7 +19,7 @@ const mainLinks = [
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)]">
+    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] [--site-header-height:217px] lg:[--site-header-height:128px]">
       <header className="sticky top-0 z-30 border-t-[2px] border-[#155394] bg-white shadow-sm shadow-[#002b5c]/10">
         <div className="relative mx-auto min-h-[126px] max-w-[1920px] overflow-hidden">
           <div className="absolute right-0 top-0 hidden h-[46px] w-[52%] items-center justify-end gap-8 rounded-bl-[48px] bg-[#155394] px-10 text-[17px] font-bold text-white lg:flex">

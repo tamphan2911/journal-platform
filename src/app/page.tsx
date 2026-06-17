@@ -1,81 +1,12 @@
-import Link from "next/link";
-import { ArrowRight, BookOpenCheck, FileText, ShieldCheck } from "lucide-react";
+import { BookOpenCheck, FileText, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { StatusPill } from "@/components/status-pill";
-import { issueArticles, metrics, pageStats, roleJurisdictions, workflow } from "@/lib/journal-data";
+import { HeroSlider } from "@/components/hero-slider";
+import { roleJurisdictions, workflow } from "@/lib/journal-data";
 
 export default function Home() {
   return (
     <AppShell>
-      <section className="academic-band text-white">
-        <div className="mx-auto grid max-w-[1440px] gap-8 px-4 py-12 md:px-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-16">
-          <div>
-            <div className="flex flex-wrap gap-2">
-              <StatusPill tone="green">ISSN 2815-2026</StatusPill>
-              <span className="rounded-[4px] bg-white/12 px-3 py-1.5 text-xs font-extrabold uppercase text-white">
-                Tạp chí học thuật
-              </span>
-            </div>
-            <h1 className="mt-7 max-w-5xl font-serif text-5xl font-extrabold leading-[1.05] md:text-7xl">
-              Chuyên san Khoa học Kinh tế - Luật
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-white/84">
-              Nền tảng xuất bản học thuật tiếng Việt cho nộp bài, phản biện kín,
-              biên tập, quản trị người dùng và lưu trữ số xuất bản trong lĩnh vực
-              kinh tế, luật, quản trị và chính sách công.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/nop-bai"
-                className="inline-flex items-center gap-2 rounded-[4px] bg-[var(--uel-gold)] px-5 py-3 text-sm font-extrabold text-[var(--uel-navy)] shadow-lg shadow-black/15 transition hover:bg-[#ffc847]"
-              >
-                Nộp bản thảo <ArrowRight size={17} />
-              </Link>
-              <Link
-                href="/workspace"
-                className="inline-flex items-center gap-2 rounded-[4px] border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/16"
-              >
-                Vào workspace
-              </Link>
-            </div>
-            <div className="mt-10 grid gap-3 md:grid-cols-4">
-              {metrics.map((metric) => (
-                <div key={metric.label} className="rounded-[6px] border border-white/14 bg-white/10 p-4">
-                  <p className="text-sm text-white/72">{metric.label}</p>
-                  <p className="mt-3 text-4xl font-extrabold text-white">{metric.value}</p>
-                  <p className="mt-2 text-xs text-white/66">{metric.helper}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <aside className="self-end rounded-[6px] border border-white/16 bg-white p-5 text-[var(--ink)] shadow-2xl shadow-black/20">
-            <div className="flex items-start justify-between gap-4 border-b border-[#dbe4f1] pb-5">
-              <div>
-                <p className="section-kicker">Số hiện hành</p>
-                <h2 className="mt-2 font-serif text-3xl font-bold text-[var(--uel-navy)]">
-                  Tập 12, Số 2, 2026
-                </h2>
-                <p className="mt-2 text-sm text-[var(--muted)]">Dữ liệu, chính sách và chuyển đổi số</p>
-              </div>
-              <BookOpenCheck className="text-[var(--nav-blue)]" size={30} />
-            </div>
-            <div className="mt-5 space-y-4">
-              {issueArticles.slice(0, 3).map((article, index) => (
-                <article key={article.title} className="grid grid-cols-[42px_1fr] gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-[4px] bg-[#e8f0fb] text-sm font-extrabold text-[var(--nav-blue)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-extrabold leading-5 text-[var(--ink)]">{article.title}</h3>
-                    <p className="mt-1 text-xs leading-5 text-[var(--muted)]">{article.authors}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </aside>
-        </div>
-      </section>
+      <HeroSlider />
 
       <section className="mx-auto grid max-w-[1440px] gap-8 px-4 py-12 md:px-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:py-16">
         <div className="space-y-6">
@@ -98,17 +29,29 @@ export default function Home() {
 
           <div className="grid gap-5 md:grid-cols-3">
             {[
-              { title: "Chuẩn học thuật", text: "Biểu mẫu metadata, phản biện kín và nhật ký quyết định được chuẩn hóa cho tòa soạn.", icon: ShieldCheck },
-              { title: "Hồ sơ minh bạch", text: "Tác giả, phản biện và biên tập viên theo dõi từng vòng xử lý trên cùng một nền tảng.", icon: FileText },
-              { title: "Lưu trữ dài hạn", text: "Số xuất bản, bài viết, tệp bản thảo và lịch sử xử lý được tổ chức cho tra cứu lâu dài.", icon: BookOpenCheck },
+              {
+                title: "Chuẩn học thuật",
+                text: "Biểu mẫu metadata, phản biện kín và nhật ký quyết định được chuẩn hóa cho tòa soạn.",
+                icon: ShieldCheck,
+              },
+              {
+                title: "Hồ sơ minh bạch",
+                text: "Tác giả, phản biện và biên tập viên theo dõi từng vòng xử lý trên cùng một nền tảng.",
+                icon: FileText,
+              },
+              {
+                title: "Lưu trữ dài hạn",
+                text: "Số xuất bản, bài viết, tệp bản thảo và lịch sử xử lý được tổ chức cho tra cứu lâu dài.",
+                icon: BookOpenCheck,
+              },
             ].map((item) => {
               const Icon = item.icon;
               return (
-              <article key={item.title} className="panel p-5">
-                <Icon className="text-[var(--nav-blue)]" size={30} />
-                <h3 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.text}</p>
-              </article>
+                <article key={item.title} className="panel p-5">
+                  <Icon className="text-[var(--nav-blue)]" size={30} />
+                  <h3 className="mt-4 font-serif text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.text}</p>
+                </article>
               );
             })}
           </div>
@@ -133,18 +76,6 @@ export default function Home() {
                 );
               })}
             </div>
-          </div>
-          <div className="grid gap-4">
-            {pageStats.map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <div key={stat.label} className="panel p-4">
-                  <Icon className="text-[var(--cyan)]" />
-                  <p className="mt-3 text-2xl font-extrabold text-[var(--uel-navy)]">{stat.value}</p>
-                  <p className="text-sm text-[var(--muted)]">{stat.label}</p>
-                </div>
-              );
-            })}
           </div>
         </aside>
       </section>
