@@ -1,87 +1,105 @@
 import Link from "next/link";
-import { authLinks, journalName, navItems } from "@/lib/journal-data";
+import { ChevronDown, Search } from "lucide-react";
+
+const utilityLinks = [
+  "Viên chức, người lao động",
+  "Người học",
+  "Người học tiềm năng",
+  "Cựu người học",
+  "Đối tác",
+];
+
+const mainLinks = [
+  { href: "/gioi-thieu", label: "GIỚI THIỆU", dropdown: true },
+  { href: "/tac-gia", label: "TUYỂN SINH" },
+  { href: "/workspace", label: "ĐÀO TẠO", dropdown: true },
+  { href: "/luu-tru", label: "NGHIÊN CỨU" },
+  { href: "/phan-bien", label: "GẮN KẾT CỘNG ĐỒNG" },
+];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)]">
-      <header className="sticky top-0 z-30 border-b border-[#d8e1ef] bg-white/96 shadow-sm shadow-[#002b5c]/5 backdrop-blur">
-        <div className="hidden bg-[var(--uel-navy)] text-white sm:block">
-          <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-1.5 text-xs md:px-8">
-            <span>Trường Đại học Kinh tế - Luật, ĐHQG-HCM</span>
-            <span className="hidden text-white/75 sm:inline">
-              Nghiên cứu - Công bố khoa học - Phản biện học thuật
-            </span>
+      <header className="sticky top-0 z-30 border-t-[2px] border-[#155394] bg-white shadow-sm shadow-[#002b5c]/10">
+        <div className="relative mx-auto min-h-[126px] max-w-[1920px] overflow-hidden">
+          <div className="absolute right-0 top-0 hidden h-[46px] w-[52%] items-center justify-end gap-8 rounded-bl-[48px] bg-[#155394] px-10 text-[17px] font-bold text-white lg:flex">
+            {utilityLinks.map((item) => (
+              <Link key={item} href="/" className="whitespace-nowrap leading-none hover:text-white/80">
+                {item}
+              </Link>
+            ))}
+            <div className="flex items-center gap-2 whitespace-nowrap">
+              <Link href="/" className="hover:text-white/80">
+                EN
+              </Link>
+              <span className="h-5 w-px bg-white/70" />
+              <Link href="/" className="border-b-2 border-white pb-0.5 hover:text-white/80">
+                VI
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-2.5 md:px-8 md:py-3">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Trang chủ Chuyên san">
-            <BrandMark />
-            <span className="min-w-0">
-              <span className="block truncate text-[10px] font-extrabold uppercase text-[var(--nav-blue)]">
-                UEL Journal Platform
-              </span>
-              <span className="block truncate font-serif text-lg font-bold leading-5 text-[var(--uel-navy)] md:text-xl">
-                {journalName}
-              </span>
-            </span>
-          </Link>
-          <nav className="hidden items-center gap-0.5 xl:flex">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="inline-flex items-center gap-1.5 rounded-[4px] px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-[#eef4fb] hover:text-[var(--nav-blue)]"
-                >
-                  <Icon size={16} strokeWidth={1.9} />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-          <div className="hidden items-center gap-2 md:flex">
-            {authLinks.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`inline-flex items-center gap-1.5 rounded-[4px] px-3 py-2 text-sm font-extrabold transition ${
-                    index === 0
-                      ? "border border-[#cbd8ea] bg-white text-[var(--uel-navy)] hover:bg-[#f7faff]"
-                      : "bg-[var(--uel-gold)] text-[var(--uel-navy)] hover:bg-[#ffc84a]"
-                  }`}
-                >
-                  <Icon size={16} />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-        <nav className="flex gap-2 overflow-x-auto border-t border-[#edf1f7] px-4 py-1.5 xl:hidden">
-          {[...navItems, ...authLinks].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="shrink-0 rounded-[4px] border border-[#dbe4f1] bg-white px-3 py-1.5 text-xs font-bold text-slate-600"
-            >
-              {item.label}
+
+          <div className="grid min-h-[126px] grid-cols-[minmax(0,1fr)] items-center gap-4 px-5 py-4 lg:grid-cols-[860px_1fr] lg:px-[86px] lg:py-0">
+            <Link href="/" className="flex min-w-0 items-center gap-5" aria-label="Trang chủ UEL">
+              <UelSeal />
+              <div className="min-w-0">
+                <p className="truncate text-[24px] font-medium uppercase leading-8 text-[#155394]">
+                  ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH
+                </p>
+                <p className="truncate text-[32px] font-extrabold uppercase leading-10 text-[#155394]">
+                  TRƯỜNG ĐẠI HỌC KINH TẾ - LUẬT
+                </p>
+              </div>
             </Link>
-          ))}
-        </nav>
+
+            <div className="flex flex-col items-start gap-3 lg:items-end lg:self-end lg:pb-7">
+              <nav className="hidden items-center gap-8 text-[20px] font-extrabold text-[#104a88] lg:flex">
+                {mainLinks.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="inline-flex items-center gap-1.5 whitespace-nowrap leading-none hover:text-[#f15a24]"
+                  >
+                    {item.label}
+                    {item.dropdown && <ChevronDown size={17} strokeWidth={1.8} />}
+                  </Link>
+                ))}
+                <Link href="/archives" aria-label="Tìm kiếm" className="text-[#f15a24]">
+                  <Search size={25} strokeWidth={1.7} />
+                </Link>
+              </nav>
+              <nav className="flex w-full gap-2 overflow-x-auto border-t border-[#e7eef7] pt-3 text-sm font-extrabold text-[#104a88] lg:hidden">
+                {[...mainLinks, { href: "/dang-nhap", label: "ĐĂNG NHẬP" }].map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="shrink-0 rounded-[4px] border border-[#dbe6f7] px-3 py-2"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
       </header>
       <main>{children}</main>
     </div>
   );
 }
 
-function BrandMark() {
+function UelSeal() {
   return (
-    <span className="relative grid h-11 w-11 flex-none place-items-center overflow-hidden rounded-[6px] bg-[var(--nav-blue)] text-white shadow-md shadow-[#004b93]/16">
-      <span className="absolute inset-x-0 top-0 h-1.5 bg-[var(--uel-gold)]" />
-      <span className="font-serif text-sm font-extrabold">UEL</span>
+    <span className="relative grid h-[102px] w-[102px] flex-none place-items-center rounded-full border-[5px] border-[#155394] bg-white text-[#155394]">
+      <span className="absolute inset-[6px] rounded-full border border-[#155394]" />
+      <span className="absolute top-[8px] text-[8px] font-extrabold uppercase tracking-[0.08em]">
+        Trường Đại học Kinh tế - Luật
+      </span>
+      <span className="text-[42px] font-black leading-none tracking-[-0.08em]">UEL</span>
+      <span className="absolute bottom-[10px] h-[12px] w-[58px] rounded-b-full border-b-[5px] border-[#155394]" />
+      <span className="absolute bottom-[4px] text-[7px] font-bold uppercase">
+        Economics & Law
+      </span>
     </span>
   );
 }
