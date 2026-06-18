@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { HeaderSearch } from "@/components/header-search";
 
 const journalName = "Chuyên san Khoa học Kinh tế - Luật";
 
@@ -90,22 +90,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </Link>
               ))}
-              <Link
-                href="/luu-tru"
-                aria-label="Tìm kiếm bài viết"
-                title="Tìm kiếm bài viết"
-                className="ml-2 grid size-10 place-items-center text-[#ef5a2c] transition-colors hover:text-[var(--uel-brand-blue)]"
-              >
-                <Search size={23} strokeWidth={2.2} />
-              </Link>
+              <div className="ml-2">
+                <HeaderSearch />
+              </div>
             </nav>
 
-            <Link
-              href="/dang-nhap"
-              className="hidden shrink-0 border border-[var(--uel-brand-blue)] px-3 py-2 text-xs font-bold text-[var(--uel-brand-blue)] transition-colors hover:bg-[var(--uel-brand-blue)] hover:text-white md:inline-flex xl:hidden"
-            >
-              Đăng nhập
-            </Link>
+            <div className="flex items-center xl:hidden">
+              <Link
+                href="/dang-nhap"
+                className="hidden shrink-0 border border-[var(--uel-brand-blue)] px-3 py-2 text-xs font-bold text-[var(--uel-brand-blue)] transition-colors hover:bg-[var(--uel-brand-blue)] hover:text-white md:inline-flex"
+              >
+                Đăng nhập
+              </Link>
+              <HeaderSearch compact />
+            </div>
           </div>
 
           <nav

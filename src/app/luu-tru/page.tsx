@@ -26,10 +26,11 @@ export default function ArchivePage() {
               <label className="text-sm font-bold text-[var(--uel-navy)]" htmlFor="archive-search">
                 Tìm kiếm bài viết
               </label>
-              <div className="mt-3 flex items-center gap-2 rounded-[4px] border border-[#cfdbef] bg-white px-3">
+              <form action="/tim-kiem" method="get" className="mt-3 flex items-center gap-2 rounded-[4px] border border-[#cfdbef] bg-white px-3 focus-within:border-[var(--uel-brand-blue)]">
                 <Search size={18} className="text-[var(--muted)]" />
-                <input id="archive-search" className="min-h-11 flex-1 bg-transparent text-sm outline-none" placeholder="Tên bài, tác giả, DOI" />
-              </div>
+                <input id="archive-search" name="q" type="search" required className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Tên bài, tác giả, lĩnh vực" />
+                <button type="submit" className="text-xs font-bold text-[var(--uel-brand-blue)]">Tìm</button>
+              </form>
             </div>
             <div className="space-y-3">
               {issues.map((issue, index) => (
@@ -62,7 +63,7 @@ export default function ArchivePage() {
             </div>
             <div className="divide-y divide-[#dbe6f7]">
               {issueArticles.map((article, index) => (
-                <article key={article.title} className="grid gap-4 p-6 md:grid-cols-[82px_1fr_120px]">
+                <article id={`bai-${index + 1}`} key={article.title} className="scroll-mt-40 grid gap-4 p-6 md:grid-cols-[82px_1fr_120px]">
                   <div className="grid h-16 w-16 place-items-center rounded-[4px] bg-[#e8f0fb] text-xl font-extrabold text-[var(--nav-blue)]">
                     {String(index + 1).padStart(2, "0")}
                   </div>
