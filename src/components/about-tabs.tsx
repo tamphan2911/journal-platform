@@ -8,15 +8,76 @@ import type { MemberGroupValue, PublicJournalMember } from "@/lib/member-types";
 const tabs = [
   { id: "ve-chuyen-san", label: "Về chuyên san", icon: BookOpenCheck },
   { id: "ban-bien-tap", label: "Ban biên tập", icon: UsersRound },
-  { id: "thanh-vien", label: "Thành viên Chuyên san", icon: Network },
+  { id: "thanh-vien", label: "Thành viên", icon: Network },
 ] as const;
 
 const departmentTabs: Array<{ id: Exclude<MemberGroupValue, "EDITORIAL_BOARD">; label: string }> = [
   { id: "EXECUTIVE", label: "Ban Điều hành" },
-  { id: "CONTENT", label: "Ban Nội dung" },
-  { id: "COMMUNICATION", label: "Ban Truyền thông" },
-  { id: "HUMAN_RESOURCES", label: "Ban Nhân sự" },
+  { id: "CONTENT", label: "Ban nội dung" },
+  { id: "COMMUNICATION", label: "Ban truyền thông" },
+  { id: "HUMAN_RESOURCES", label: "Ban nhân sự" },
 ];
+
+type DepartmentGroup = Exclude<MemberGroupValue, "EDITORIAL_BOARD">;
+
+const departmentResponsibilities: Record<DepartmentGroup, Array<{ title: string; detail: string }>> = {
+  EXECUTIVE: [
+    {
+      title: "Điều phối hoạt động",
+      detail: "Xây dựng kế hoạch nhiệm kỳ, phân công đầu mối và theo dõi tiến độ chung của Chuyên san.",
+    },
+    {
+      title: "Quản trị quy trình",
+      detail: "Phối hợp các ban chuyên môn, xử lý vấn đề phát sinh và bảo đảm hoạt động đúng quy chế.",
+    },
+    {
+      title: "Báo cáo và phát triển",
+      detail: "Tổng hợp kết quả hoạt động, đề xuất nguồn lực và định hướng phát triển theo từng giai đoạn.",
+    },
+  ],
+  CONTENT: [
+    {
+      title: "Phát triển chủ đề",
+      detail: "Đề xuất chuyên đề, lập kế hoạch nội dung và phát triển mạng lưới tác giả phù hợp với tôn chỉ Chuyên san.",
+    },
+    {
+      title: "Biên tập học thuật",
+      detail: "Kiểm tra cấu trúc, trích dẫn, tính nhất quán và chất lượng trình bày của bản thảo trước xuất bản.",
+    },
+    {
+      title: "Chuẩn hóa xuất bản",
+      detail: "Hoàn thiện metadata, từ khóa, thông tin tác giả và các tuyên bố đạo đức nghiên cứu.",
+    },
+  ],
+  COMMUNICATION: [
+    {
+      title: "Truyền thông khoa học",
+      detail: "Giới thiệu số mới, kết quả nghiên cứu và hoạt động học thuật trên các kênh chính thức.",
+    },
+    {
+      title: "Kết nối cộng đồng",
+      detail: "Phối hợp với đơn vị chuyên môn, đối tác và độc giả để mở rộng khả năng tiếp cận công bố.",
+    },
+    {
+      title: "Quản trị nội dung số",
+      detail: "Duy trì lịch tin, hình ảnh nhận diện và chất lượng nội dung truyền thông của Chuyên san.",
+    },
+  ],
+  HUMAN_RESOURCES: [
+    {
+      title: "Điều phối nhân sự",
+      detail: "Quản lý hồ sơ, phân công và hỗ trợ thành viên tham gia các hoạt động của Chuyên san.",
+    },
+    {
+      title: "Phát triển cộng tác viên",
+      detail: "Xây dựng mạng lưới chuyên gia, phản biện viên và cộng tác viên theo nhu cầu chuyên môn.",
+    },
+    {
+      title: "Nâng cao năng lực",
+      detail: "Tổ chức hướng dẫn nghiệp vụ, chia sẻ quy trình và đánh giá nhu cầu phát triển đội ngũ.",
+    },
+  ],
+};
 
 type TabId = (typeof tabs)[number]["id"];
 
@@ -157,6 +218,7 @@ function ViewButton({
   return (
     <button
       type="button"
+      aria-pressed={active}
       onClick={onClick}
       className={`inline-flex h-9 items-center gap-2 px-3 text-xs font-bold transition-colors ${
         active ? "bg-[var(--uel-brand-blue)] text-white" : "text-[var(--muted)] hover:bg-white hover:text-[var(--uel-brand-blue)]"
@@ -183,7 +245,8 @@ function EditorialRoles() {
 }
 
 function Departments({ members }: { members: PublicJournalMember[] }) {
-  const [department, setDepartment] = useState<Exclude<MemberGroupValue, "EDITORIAL_BOARD">>("EXECUTIVE");
+  const [department, setDepartment] = useState<DepartmentGroup>("EXECUTIVE");
+  const [view, setView] = useState<"people" | "tasks">("people");
   const terms = Array.from(
     new Set(members.filter((member) => member.group !== "EDITORIAL_BOARD").map((member) => member.term)),
   ).sort((a, b) => b.localeCompare(a, "vi", { numeric: true }));
@@ -221,9 +284,33 @@ function Departments({ members }: { members: PublicJournalMember[] }) {
           </select>
         </label>
       </div>
-      <div className="mt-5">
-        <MemberList members={members.filter((member) => member.group === department && member.term === term)} />
+      <div className="mt-4 flex justify-end">
+        <div className="inline-flex border border-[#cbd8e8] bg-[#f4f7fa] p-1" role="group" aria-label="Chế độ xem thành viên Chuyên san">
+          <ViewButton active={view === "people"} onClick={() => setView("people")} icon={UsersRound} label="Thành viên" />
+          <ViewButton active={view === "tasks"} onClick={() => setView("tasks")} icon={TableProperties} label="Nhiệm vụ" />
+        </div>
       </div>
+      <div className="mt-4">
+        {view === "people" ? (
+          <MemberList members={members.filter((member) => member.group === department && member.term === term)} />
+        ) : (
+          <ResponsibilityList items={departmentResponsibilities[department]} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ResponsibilityList({ items }: { items: Array<{ title: string; detail: string }> }) {
+  return (
+    <div className="divide-y divide-[#dbe4ee]">
+      {items.map((item, index) => (
+        <article key={item.title} className="grid gap-3 py-6 sm:grid-cols-[52px_210px_1fr] sm:items-start">
+          <span className="text-sm font-extrabold text-[var(--uel-gold)]">{String(index + 1).padStart(2, "0")}</span>
+          <h3 className="uel-block-title text-lg">{item.title}</h3>
+          <p className="uel-block-copy text-sm leading-6">{item.detail}</p>
+        </article>
+      ))}
     </div>
   );
 }
