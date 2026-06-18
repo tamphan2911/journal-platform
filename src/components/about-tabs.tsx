@@ -323,21 +323,8 @@ function MemberList({ members }: { members: PublicJournalMember[] }) {
   return (
     <div className="divide-y divide-[#dbe4ee]">
       {members.map((member) => (
-        <article key={member.id} className="grid grid-cols-[104px_minmax(0,1fr)] gap-5 py-6 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-8">
-          <div className="aspect-[4/5] self-start overflow-hidden bg-[#edf2f7]">
-            {member.photoUrl ? (
-              <Image
-                src={member.photoUrl}
-                alt={`Ảnh ${member.name}`}
-                width={396}
-                height={495}
-                className="h-full w-full object-cover"
-                unoptimized
-              />
-            ) : (
-              <div className="grid h-full place-items-center text-[#9aaabd]"><UserRound size={42} strokeWidth={1.4} /></div>
-            )}
-          </div>
+        <article key={member.id} className="group grid grid-cols-[136px_minmax(0,1fr)] gap-6 py-8 sm:grid-cols-[176px_minmax(0,1fr)] sm:gap-10">
+          <MemberPortrait name={member.name} photoUrl={member.photoUrl} />
           <div className="min-w-0 self-center">
             <p className="text-xs font-extrabold uppercase text-[var(--uel-gold)]">{member.role}</p>
             <h2 className="uel-block-title mt-2 text-xl sm:text-2xl">
@@ -350,5 +337,36 @@ function MemberList({ members }: { members: PublicJournalMember[] }) {
         </article>
       ))}
     </div>
+  );
+}
+
+function MemberPortrait({ name, photoUrl }: { name: string; photoUrl: string | null }) {
+  return (
+    <figure className="relative self-start pb-3 pr-3" aria-label={`Chân dung ${name}`}>
+      <span
+        aria-hidden="true"
+        className="absolute bottom-0 right-0 h-[calc(100%-12px)] w-[calc(100%-12px)] border-b-2 border-r-2 border-[#9db4ce] bg-[#e8eff7]"
+      />
+      <div className="relative border border-[#c9d6e5] bg-white p-1.5 shadow-[0_8px_22px_rgba(20,78,140,0.12)]">
+        <span aria-hidden="true" className="absolute left-4 top-0 z-10 h-[3px] w-11 bg-[var(--uel-gold)]" />
+        <div className="aspect-[4/5] overflow-hidden bg-[#edf2f7]">
+          {photoUrl ? (
+            <Image
+              src={photoUrl}
+              alt={`Ảnh ${name}`}
+              width={480}
+              height={600}
+              className="h-full w-full object-cover object-[center_18%] saturate-[0.9] contrast-[1.03] transition duration-500 group-hover:scale-[1.015] group-hover:saturate-100"
+              unoptimized
+            />
+          ) : (
+            <div className="grid h-full place-items-center bg-[#eef3f8] text-[#8298b0]">
+              <UserRound size={46} strokeWidth={1.25} />
+            </div>
+          )}
+        </div>
+      </div>
+      <span aria-hidden="true" className="absolute bottom-2 left-0 h-8 w-px bg-[var(--uel-gold)]" />
+    </figure>
   );
 }
