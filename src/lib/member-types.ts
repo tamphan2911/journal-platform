@@ -18,6 +18,7 @@ export type PublicJournalMember = {
   email: string | null;
   photoUrl: string | null;
   group: MemberGroupValue;
+  term: string;
   sortOrder: number;
 };
 

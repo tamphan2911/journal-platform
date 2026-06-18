@@ -19,6 +19,7 @@ export const journalMemberInputSchema = z.object({
   email: z.union([z.literal(""), z.string().trim().email()]).optional().default(""),
   photoUrl: optionalImage.optional().default(""),
   group: z.enum(memberGroups),
+  term: z.string().trim().regex(/^\d{4}-\d{4}$/, "Nhiệm kỳ phải có định dạng 2024-2025."),
   sortOrder: z.coerce.number().int().min(0).max(9999),
   isActive: z.boolean(),
 });
@@ -34,6 +35,7 @@ export const fallbackJournalMembers: PublicJournalMember[] = [
     email: "minhanh@uel.edu.vn",
     photoUrl: "/demo-members/member-01.jpg",
     group: "EDITORIAL_BOARD",
+    term: "2024-2025",
     sortOrder: 10,
   },
   {
@@ -46,6 +48,7 @@ export const fallbackJournalMembers: PublicJournalMember[] = [
     email: null,
     photoUrl: "/demo-members/member-03.jpg",
     group: "EXECUTIVE",
+    term: "2024-2025",
     sortOrder: 10,
   },
   {
@@ -58,6 +61,7 @@ export const fallbackJournalMembers: PublicJournalMember[] = [
     email: null,
     photoUrl: "/demo-members/member-02.jpg",
     group: "CONTENT",
+    term: "2024-2025",
     sortOrder: 10,
   },
   {
@@ -70,6 +74,7 @@ export const fallbackJournalMembers: PublicJournalMember[] = [
     email: null,
     photoUrl: "/demo-members/member-03.jpg",
     group: "COMMUNICATION",
+    term: "2024-2025",
     sortOrder: 10,
   },
   {
@@ -82,6 +87,7 @@ export const fallbackJournalMembers: PublicJournalMember[] = [
     email: null,
     photoUrl: "/demo-members/member-02.jpg",
     group: "HUMAN_RESOURCES",
+    term: "2024-2025",
     sortOrder: 10,
   },
 ];
@@ -90,7 +96,7 @@ const readJournalMembers = unstable_cache(
   async () =>
     prisma.journalMember.findMany({
       where: { isActive: true },
-      orderBy: [{ group: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+      orderBy: [{ term: "desc" }, { group: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
       select: {
         id: true,
         name: true,
@@ -101,6 +107,7 @@ const readJournalMembers = unstable_cache(
         email: true,
         photoUrl: true,
         group: true,
+        term: true,
         sortOrder: true,
       },
     }),

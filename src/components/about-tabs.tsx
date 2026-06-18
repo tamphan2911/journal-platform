@@ -109,7 +109,7 @@ function AboutJournal() {
 
   return (
     <div className="flex min-h-[440px] flex-col justify-center">
-      <p className="uel-block-copy mx-auto max-w-3xl text-center text-base leading-8">
+      <p className="uel-block-copy mx-auto max-w-3xl text-justify text-base leading-8">
         Chuyên san Khoa học Kinh tế - Luật là diễn đàn công bố nghiên cứu bằng tiếng Việt trong
         các lĩnh vực kinh tế, luật, quản trị, tài chính, dữ liệu và phát triển bền vững.
       </p>
@@ -184,29 +184,45 @@ function EditorialRoles() {
 
 function Departments({ members }: { members: PublicJournalMember[] }) {
   const [department, setDepartment] = useState<Exclude<MemberGroupValue, "EDITORIAL_BOARD">>("EXECUTIVE");
+  const terms = Array.from(
+    new Set(members.filter((member) => member.group !== "EDITORIAL_BOARD").map((member) => member.term)),
+  ).sort((a, b) => b.localeCompare(a, "vi", { numeric: true }));
+  const [term, setTerm] = useState(terms[0] ?? "2024-2025");
 
   return (
     <div>
-      <div className="flex gap-1 overflow-x-auto border-b border-[#d8e1ec]" role="tablist" aria-label="Các ban của Chuyên san">
-        {departmentTabs.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={department === tab.id}
-            onClick={() => setDepartment(tab.id)}
-            className={`min-h-12 shrink-0 border-b-3 px-4 text-sm font-bold transition-colors ${
-              department === tab.id
-                ? "border-[var(--uel-gold)] text-[var(--uel-brand-blue)]"
-                : "border-transparent text-[var(--muted)] hover:text-[var(--uel-brand-blue)]"
-            }`}
+      <div className="flex flex-col gap-3 border-b border-[#d8e1ec] md:flex-row md:items-end md:justify-between">
+        <div className="flex min-w-0 flex-1 gap-1 overflow-x-auto" role="tablist" aria-label="Các ban của Chuyên san">
+          {departmentTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={department === tab.id}
+              onClick={() => setDepartment(tab.id)}
+              className={`min-h-12 shrink-0 border-b-3 px-4 text-sm font-bold transition-colors ${
+                department === tab.id
+                  ? "border-[var(--uel-gold)] text-[var(--uel-brand-blue)]"
+                  : "border-transparent text-[var(--muted)] hover:text-[var(--uel-brand-blue)]"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        <label className="mb-2 flex shrink-0 items-center gap-2 md:ml-4">
+          <span className="text-xs font-bold text-[var(--muted)]">Nhiệm kỳ</span>
+          <select
+            className="h-9 min-w-[132px] border border-[#cbd8e8] bg-white px-3 text-sm font-bold text-[var(--uel-brand-blue)] outline-none transition-colors focus:border-[var(--uel-brand-blue)]"
+            value={term}
+            onChange={(event) => setTerm(event.target.value)}
           >
-            {tab.label}
-          </button>
-        ))}
+            {terms.map((item) => <option key={item} value={item}>{item}</option>)}
+          </select>
+        </label>
       </div>
       <div className="mt-5">
-        <MemberList members={members.filter((member) => member.group === department)} />
+        <MemberList members={members.filter((member) => member.group === department && member.term === term)} />
       </div>
     </div>
   );
@@ -220,16 +236,7 @@ function MemberList({ members }: { members: PublicJournalMember[] }) {
   return (
     <div className="divide-y divide-[#dbe4ee]">
       {members.map((member) => (
-        <article key={member.id} className="grid grid-cols-[minmax(0,1fr)_104px] gap-5 py-6 sm:grid-cols-[minmax(0,1fr)_132px] sm:gap-8">
-          <div className="min-w-0 self-center">
-            <p className="text-xs font-extrabold uppercase text-[var(--uel-gold)]">{member.role}</p>
-            <h2 className="uel-block-title mt-2 text-xl sm:text-2xl">
-              {member.academicTitle ? `${member.academicTitle} ` : ""}{member.name}
-            </h2>
-            {member.organization ? <p className="mt-2 text-sm font-semibold text-[var(--uel-brand-blue)]">{member.organization}</p> : null}
-            <p className="uel-block-copy mt-4 text-sm leading-7">{member.bio}</p>
-            {member.email ? <a href={`mailto:${member.email}`} className="mt-3 inline-block text-sm font-semibold text-[var(--uel-brand-blue)] hover:underline">{member.email}</a> : null}
-          </div>
+        <article key={member.id} className="grid grid-cols-[104px_minmax(0,1fr)] gap-5 py-6 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-8">
           <div className="aspect-[4/5] self-start overflow-hidden bg-[#edf2f7]">
             {member.photoUrl ? (
               <Image
@@ -243,6 +250,15 @@ function MemberList({ members }: { members: PublicJournalMember[] }) {
             ) : (
               <div className="grid h-full place-items-center text-[#9aaabd]"><UserRound size={42} strokeWidth={1.4} /></div>
             )}
+          </div>
+          <div className="min-w-0 self-center">
+            <p className="text-xs font-extrabold uppercase text-[var(--uel-gold)]">{member.role}</p>
+            <h2 className="uel-block-title mt-2 text-xl sm:text-2xl">
+              {member.academicTitle ? `${member.academicTitle} ` : ""}{member.name}
+            </h2>
+            {member.organization ? <p className="mt-2 text-sm font-semibold text-[var(--uel-brand-blue)]">{member.organization}</p> : null}
+            <p className="uel-block-copy mt-4 text-sm leading-7">{member.bio}</p>
+            {member.email ? <a href={`mailto:${member.email}`} className="mt-3 inline-block text-sm font-semibold text-[var(--uel-brand-blue)] hover:underline">{member.email}</a> : null}
           </div>
         </article>
       ))}

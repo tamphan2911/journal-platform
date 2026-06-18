@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function AdminMembersPage() {
   const members = await prisma.journalMember.findMany({
-    orderBy: [{ group: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+    orderBy: [{ term: "desc" }, { group: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
     select: {
       id: true,
       name: true,
@@ -14,6 +14,7 @@ export default async function AdminMembersPage() {
       email: true,
       photoUrl: true,
       group: true,
+      term: true,
       sortOrder: true,
       isActive: true,
     },

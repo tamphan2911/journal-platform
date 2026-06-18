@@ -14,6 +14,7 @@ type MemberRecord = {
   email: string | null;
   photoUrl: string | null;
   group: MemberGroupValue;
+  term: string;
   sortOrder: number;
   isActive: boolean;
 };
@@ -27,6 +28,7 @@ const emptyForm = {
   email: "",
   photoUrl: "",
   group: "EDITORIAL_BOARD" as MemberGroupValue,
+  term: "2024-2025",
   sortOrder: 10,
   isActive: true,
 };
@@ -56,6 +58,7 @@ export function MemberManager({ initialMembers }: { initialMembers: MemberRecord
       email: member.email ?? "",
       photoUrl: member.photoUrl ?? "",
       group: member.group,
+      term: member.term,
       sortOrder: member.sortOrder,
       isActive: member.isActive,
     });
@@ -102,7 +105,7 @@ export function MemberManager({ initialMembers }: { initialMembers: MemberRecord
   }
 
   const orderedMembers = useMemo(
-    () => [...members].sort((a, b) => a.group.localeCompare(b.group) || a.sortOrder - b.sortOrder || a.name.localeCompare(b.name, "vi")),
+    () => [...members].sort((a, b) => b.term.localeCompare(a.term, "vi", { numeric: true }) || a.group.localeCompare(b.group) || a.sortOrder - b.sortOrder || a.name.localeCompare(b.name, "vi")),
     [members],
   );
 
@@ -132,7 +135,7 @@ export function MemberManager({ initialMembers }: { initialMembers: MemberRecord
               </div>
               <div className="self-start">
                 <p className="text-xs font-bold text-[var(--uel-navy)]">{memberGroupLabels[member.group]}</p>
-                <p className="mt-1 text-xs text-[var(--muted)]">Thứ tự {member.sortOrder} · {member.isActive ? "Đang hiện" : "Đang ẩn"}</p>
+                <p className="mt-1 text-xs text-[var(--muted)]">{member.term} · Thứ tự {member.sortOrder} · {member.isActive ? "Đang hiện" : "Đang ẩn"}</p>
               </div>
               <div className="flex items-start justify-end gap-1">
                 <button type="button" onClick={() => edit(member)} title="Chỉnh sửa" aria-label="Chỉnh sửa" className="grid size-8 place-items-center text-[var(--uel-brand-blue)]"><Pencil size={17} /></button>
@@ -160,6 +163,7 @@ export function MemberManager({ initialMembers }: { initialMembers: MemberRecord
               {Object.entries(memberGroupLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
             </select>
           </Field>
+          <Field label="Nhiệm kỳ"><input className="field" value={form.term} onChange={(event) => setForm({ ...form, term: event.target.value })} placeholder="2024-2025" pattern="[0-9]{4}-[0-9]{4}" required /></Field>
           <Field label="Đơn vị"><input className="field" value={form.organization} onChange={(event) => setForm({ ...form, organization: event.target.value })} /></Field>
           <Field label="Thông tin giới thiệu"><textarea className="field min-h-28 resize-y" value={form.bio} onChange={(event) => setForm({ ...form, bio: event.target.value })} required /></Field>
           <Field label="Email"><input className="field" type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} /></Field>
