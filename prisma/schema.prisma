@@ -65,6 +65,14 @@ enum NewsStatus {
   ARCHIVED
 }
 
+enum MemberGroup {
+  EDITORIAL_BOARD
+  EXECUTIVE
+  CONTENT
+  COMMUNICATION
+  HUMAN_RESOURCES
+}
+
 model User {
   id                      String                   @id @default(cuid())
   email                   String                   @unique
@@ -124,6 +132,24 @@ model SiteSetting {
   updatedAt DateTime @updatedAt
 
   @@index([group])
+}
+
+model JournalMember {
+  id            String      @id @default(cuid())
+  name          String
+  academicTitle String?
+  role          String
+  organization  String?
+  bio           String
+  email         String?
+  photoUrl      String?
+  group         MemberGroup
+  sortOrder     Int         @default(0)
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([group, isActive, sortOrder])
 }
 
 model EmailVerificationToken {

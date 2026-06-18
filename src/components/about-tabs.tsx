@@ -1,21 +1,29 @@
 "use client";
 
-import { BookOpenCheck, Network, UsersRound } from "lucide-react";
+import { BookOpenCheck, Network, TableProperties, UserRound, UsersRound } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
-import { UelIcon } from "@/components/uel-icon";
+import type { MemberGroupValue, PublicJournalMember } from "@/lib/member-types";
 
 const tabs = [
   { id: "ve-chuyen-san", label: "Về chuyên san", icon: BookOpenCheck },
   { id: "ban-bien-tap", label: "Ban biên tập", icon: UsersRound },
-  { id: "co-cau-to-chuc", label: "Cơ cấu tổ chức", icon: Network },
+  { id: "thanh-vien", label: "Thành viên Chuyên san", icon: Network },
 ] as const;
+
+const departmentTabs: Array<{ id: Exclude<MemberGroupValue, "EDITORIAL_BOARD">; label: string }> = [
+  { id: "EXECUTIVE", label: "Ban Điều hành" },
+  { id: "CONTENT", label: "Ban Nội dung" },
+  { id: "COMMUNICATION", label: "Ban Truyền thông" },
+  { id: "HUMAN_RESOURCES", label: "Ban Nhân sự" },
+];
 
 type TabId = (typeof tabs)[number]["id"];
 
 const editorialRoles = [
   {
     title: "Hội đồng biên tập",
-    detail: "Định hướng học thuật, phạm vi công bố và tiêu chuẩn chất lượng dài hạn của chuyên san.",
+    detail: "Định hướng học thuật, phạm vi công bố và tiêu chuẩn chất lượng dài hạn của Chuyên san.",
   },
   {
     title: "Tổng biên tập",
@@ -31,31 +39,12 @@ const editorialRoles = [
   },
 ];
 
-const organizationUnits = [
-  { level: "01", title: "Hội đồng xuất bản", detail: "Định hướng và giám sát học thuật" },
-  { level: "02", title: "Tổng biên tập", detail: "Điều hành và quyết định biên tập" },
-  { level: "03", title: "Ban biên tập", detail: "Tổ chức phản biện và phát triển nội dung" },
-  { level: "03", title: "Ban thư ký", detail: "Tiếp nhận, điều phối và chuẩn hóa hồ sơ" },
-  { level: "03", title: "Bộ phận xuất bản số", detail: "Metadata, lưu trữ và phát hành trực tuyến" },
-];
-
-export function AboutTabs() {
+export function AboutTabs({ members }: { members: PublicJournalMember[] }) {
   const [activeTab, setActiveTab] = useState<TabId>("ve-chuyen-san");
 
   return (
-    <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_270px]">
-      <section
-        id="about-tabpanel"
-        role="tabpanel"
-        aria-labelledby={`tab-${activeTab}`}
-        className="panel min-h-[520px] p-5 md:p-8"
-      >
-        {activeTab === "ve-chuyen-san" ? <AboutJournal /> : null}
-        {activeTab === "ban-bien-tap" ? <EditorialBoard /> : null}
-        {activeTab === "co-cau-to-chuc" ? <Organization /> : null}
-      </section>
-
-      <aside className="order-first lg:order-none lg:sticky lg:top-[145px]">
+    <div className="grid items-start gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
+      <aside className="order-first lg:sticky lg:top-[145px]">
         <p className="mb-3 text-xs font-extrabold uppercase text-[var(--muted)]">Mục giới thiệu</p>
         <div
           role="tablist"
@@ -87,35 +76,48 @@ export function AboutTabs() {
           })}
         </div>
       </aside>
+
+      <section
+        id="about-tabpanel"
+        role="tabpanel"
+        aria-labelledby={`tab-${activeTab}`}
+        className="panel min-h-[520px] p-5 md:p-8"
+      >
+        {activeTab === "ve-chuyen-san" ? <AboutJournal /> : null}
+        {activeTab === "ban-bien-tap" ? (
+          <EditorialBoard members={members.filter((member) => member.group === "EDITORIAL_BOARD")} />
+        ) : null}
+        {activeTab === "thanh-vien" ? <Departments members={members} /> : null}
+      </section>
     </div>
   );
 }
 
 function AboutJournal() {
+  const principles = [
+    {
+      title: "Sứ mạng",
+      detail:
+        "Kiến tạo diễn đàn học thuật tin cậy, kết nối nghiên cứu kinh tế, luật và chính sách với nhu cầu phát triển của cộng đồng.",
+    },
+    {
+      title: "Tầm nhìn",
+      detail:
+        "Trở thành ấn phẩm học thuật có uy tín, thúc đẩy công bố mở và lan tỏa tri thức Việt Nam trong khu vực.",
+    },
+  ];
+
   return (
-    <div>
-      <div className="flex items-start justify-between gap-6">
-        <div>
-          <p className="section-kicker">Về chuyên san</p>
-          <h2 className="uel-block-title mt-2 max-w-2xl text-3xl md:text-4xl">
-            Nghiên cứu phục vụ tri thức, chính sách và cộng đồng
-          </h2>
-        </div>
-        <UelIcon name="brandIdentity" size={68} className="hidden sm:block" />
-      </div>
-      <p className="uel-block-copy mt-6 max-w-3xl text-base leading-8">
+    <div className="flex min-h-[440px] flex-col justify-center">
+      <p className="uel-block-copy mx-auto max-w-3xl text-center text-base leading-8">
         Chuyên san Khoa học Kinh tế - Luật là diễn đàn công bố nghiên cứu bằng tiếng Việt trong
         các lĩnh vực kinh tế, luật, quản trị, tài chính, dữ liệu và phát triển bền vững.
       </p>
-      <div className="mt-10 grid border-y border-[#dbe4ee] md:grid-cols-3 md:divide-x md:divide-[#dbe4ee]">
-        {[
-          ["Tôn chỉ", "Ưu tiên đóng góp học thuật có giá trị thực tiễn và hàm ý chính sách rõ ràng."],
-          ["Phản biện", "Áp dụng quy trình phản biện kín, kiểm tra đạo đức và xung đột lợi ích."],
-          ["Xuất bản mở", "Tổ chức metadata và lưu trữ số để phục vụ tìm kiếm, trích dẫn lâu dài."],
-        ].map(([title, detail]) => (
-          <div key={title} className="py-6 md:px-6 md:first:pl-0 md:last:pr-0">
-            <h3 className="uel-block-title text-xl">{title}</h3>
-            <p className="uel-block-copy mt-3 text-sm">{detail}</p>
+      <div className="mt-10 grid md:grid-cols-2 md:divide-x md:divide-[#cbd8e8]">
+        {principles.map((principle) => (
+          <div key={principle.title} className="px-5 py-7 text-center md:px-10">
+            <h2 className="uel-block-title text-2xl">{principle.title}</h2>
+            <p className="uel-block-copy mx-auto mt-4 max-w-md text-sm leading-7">{principle.detail}</p>
           </div>
         ))}
       </div>
@@ -123,50 +125,127 @@ function AboutJournal() {
   );
 }
 
-function EditorialBoard() {
+function EditorialBoard({ members }: { members: PublicJournalMember[] }) {
+  const [view, setView] = useState<"people" | "roles">("people");
+
   return (
     <div>
-      <p className="section-kicker">Ban biên tập</p>
-      <h2 className="uel-block-title mt-2 text-3xl md:text-4xl">Trách nhiệm biên tập và học thuật</h2>
-      <p className="uel-block-copy mt-5 max-w-3xl text-base">
-        Cơ chế phân quyền bảo đảm mỗi bản thảo được xử lý độc lập, minh bạch và đúng chuyên môn.
-        Danh sách nhân sự chính thức sẽ được công bố theo quyết định kiện toàn của đơn vị chủ quản.
-      </p>
-      <div className="mt-8 divide-y divide-[#dbe4ee] border-y border-[#dbe4ee]">
-        {editorialRoles.map((role, index) => (
-          <article key={role.title} className="grid gap-3 py-5 sm:grid-cols-[52px_220px_1fr] sm:items-start">
-            <span className="text-sm font-extrabold text-[var(--uel-gold)]">{String(index + 1).padStart(2, "0")}</span>
-            <h3 className="uel-block-title text-lg">{role.title}</h3>
-            <p className="uel-block-copy text-sm">{role.detail}</p>
-          </article>
-        ))}
+      <div className="flex justify-end">
+        <div className="inline-flex border border-[#cbd8e8] bg-[#f4f7fa] p-1" role="group" aria-label="Chế độ xem Ban biên tập">
+          <ViewButton active={view === "people"} onClick={() => setView("people")} icon={UsersRound} label="Thành viên" />
+          <ViewButton active={view === "roles"} onClick={() => setView("roles")} icon={TableProperties} label="Vai trò" />
+        </div>
+      </div>
+      <div className="mt-5">
+        {view === "people" ? <MemberList members={members} /> : <EditorialRoles />}
       </div>
     </div>
   );
 }
 
-function Organization() {
+function ViewButton({
+  active,
+  onClick,
+  icon: Icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: typeof UsersRound;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex h-9 items-center gap-2 px-3 text-xs font-bold transition-colors ${
+        active ? "bg-[var(--uel-brand-blue)] text-white" : "text-[var(--muted)] hover:bg-white hover:text-[var(--uel-brand-blue)]"
+      }`}
+    >
+      <Icon size={16} />
+      {label}
+    </button>
+  );
+}
+
+function EditorialRoles() {
+  return (
+    <div className="divide-y divide-[#dbe4ee]">
+      {editorialRoles.map((role, index) => (
+        <article key={role.title} className="grid gap-3 py-6 sm:grid-cols-[52px_210px_1fr] sm:items-start">
+          <span className="text-sm font-extrabold text-[var(--uel-gold)]">{String(index + 1).padStart(2, "0")}</span>
+          <h3 className="uel-block-title text-lg">{role.title}</h3>
+          <p className="uel-block-copy text-sm">{role.detail}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function Departments({ members }: { members: PublicJournalMember[] }) {
+  const [department, setDepartment] = useState<Exclude<MemberGroupValue, "EDITORIAL_BOARD">>("EXECUTIVE");
+
   return (
     <div>
-      <p className="section-kicker">Cơ cấu tổ chức</p>
-      <h2 className="uel-block-title mt-2 text-3xl md:text-4xl">Mô hình vận hành chuyên san</h2>
-      <p className="uel-block-copy mt-5 max-w-3xl text-base">
-        Các đơn vị phối hợp theo ba cấp trách nhiệm, từ định hướng xuất bản đến xử lý biên tập và
-        phát hành số.
-      </p>
-      <div className="relative mt-9 space-y-3 before:absolute before:bottom-6 before:left-[27px] before:top-6 before:w-px before:bg-[#cbd8e8]">
-        {organizationUnits.map((unit, index) => (
-          <article key={`${unit.title}-${index}`} className="relative grid grid-cols-[56px_1fr] gap-4 bg-white py-3">
-            <span className="z-10 grid size-14 place-items-center border-4 border-white bg-[#edf3fa] text-xs font-extrabold text-[var(--uel-brand-blue)]">
-              {unit.level}
-            </span>
-            <div className="self-center border-b border-[#e0e7f0] pb-4">
-              <h3 className="uel-block-title text-lg">{unit.title}</h3>
-              <p className="uel-block-copy mt-1 text-sm">{unit.detail}</p>
-            </div>
-          </article>
+      <div className="flex gap-1 overflow-x-auto border-b border-[#d8e1ec]" role="tablist" aria-label="Các ban của Chuyên san">
+        {departmentTabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={department === tab.id}
+            onClick={() => setDepartment(tab.id)}
+            className={`min-h-12 shrink-0 border-b-3 px-4 text-sm font-bold transition-colors ${
+              department === tab.id
+                ? "border-[var(--uel-gold)] text-[var(--uel-brand-blue)]"
+                : "border-transparent text-[var(--muted)] hover:text-[var(--uel-brand-blue)]"
+            }`}
+          >
+            {tab.label}
+          </button>
         ))}
       </div>
+      <div className="mt-5">
+        <MemberList members={members.filter((member) => member.group === department)} />
+      </div>
+    </div>
+  );
+}
+
+function MemberList({ members }: { members: PublicJournalMember[] }) {
+  if (!members.length) {
+    return <p className="py-16 text-center text-sm text-[var(--muted)]">Thông tin thành viên đang được cập nhật.</p>;
+  }
+
+  return (
+    <div className="divide-y divide-[#dbe4ee]">
+      {members.map((member) => (
+        <article key={member.id} className="grid grid-cols-[minmax(0,1fr)_104px] gap-5 py-6 sm:grid-cols-[minmax(0,1fr)_132px] sm:gap-8">
+          <div className="min-w-0 self-center">
+            <p className="text-xs font-extrabold uppercase text-[var(--uel-gold)]">{member.role}</p>
+            <h2 className="uel-block-title mt-2 text-xl sm:text-2xl">
+              {member.academicTitle ? `${member.academicTitle} ` : ""}{member.name}
+            </h2>
+            {member.organization ? <p className="mt-2 text-sm font-semibold text-[var(--uel-brand-blue)]">{member.organization}</p> : null}
+            <p className="uel-block-copy mt-4 text-sm leading-7">{member.bio}</p>
+            {member.email ? <a href={`mailto:${member.email}`} className="mt-3 inline-block text-sm font-semibold text-[var(--uel-brand-blue)] hover:underline">{member.email}</a> : null}
+          </div>
+          <div className="aspect-[4/5] self-start overflow-hidden bg-[#edf2f7]">
+            {member.photoUrl ? (
+              <Image
+                src={member.photoUrl}
+                alt={`Ảnh ${member.name}`}
+                width={396}
+                height={495}
+                className="h-full w-full object-cover"
+                unoptimized
+              />
+            ) : (
+              <div className="grid h-full place-items-center text-[#9aaabd]"><UserRound size={42} strokeWidth={1.4} /></div>
+            )}
+          </div>
+        </article>
+      ))}
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, BookOpenText, FileCheck2, FileText, Newspaper, Settings2, Users } from "lucide-react";
+import { ArrowRight, BookOpenText, ContactRound, FileCheck2, FileText, Newspaper, Settings2, Users } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 const modules = [
   { href: "/workspace/admin/news", label: "Tin tức", detail: "Soạn, duyệt và xuất bản tin", icon: Newspaper, countKey: "news" },
+  { href: "/workspace/admin/members", label: "Thành viên", detail: "Ban biên tập và các ban chuyên môn", icon: ContactRound, countKey: "members" },
   { href: "/workspace/admin/users", label: "Người dùng", detail: "Vai trò và trạng thái tài khoản", icon: Users, countKey: "users" },
   { href: "/workspace/admin/submissions", label: "Bản thảo", detail: "Theo dõi toàn bộ quy trình", icon: FileText, countKey: "submissions" },
   { href: "/workspace/admin/articles", label: "Bài xuất bản", detail: "Metadata, DOI và tệp bài", icon: FileCheck2, countKey: "articles" },
@@ -12,15 +13,16 @@ const modules = [
 ] as const;
 
 export default async function AdminWorkspacePage() {
-  const [news, users, submissions, articles, issues, settings] = await Promise.all([
+  const [news, members, users, submissions, articles, issues, settings] = await Promise.all([
     prisma.newsPost.count(),
+    prisma.journalMember.count(),
     prisma.user.count(),
     prisma.manuscript.count(),
     prisma.article.count(),
     prisma.journalIssue.count(),
     prisma.siteSetting.count(),
   ]);
-  const counts = { news, users, submissions, articles, issues, settings };
+  const counts = { news, members, users, submissions, articles, issues, settings };
 
   return (
     <div>

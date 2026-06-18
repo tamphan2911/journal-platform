@@ -2,6 +2,7 @@
 
 import {
   BookOpenText,
+  ContactRound,
   FileCheck2,
   FileText,
   LayoutDashboard,
@@ -15,6 +16,7 @@ import { usePathname } from "next/navigation";
 const items = [
   { href: "/workspace/admin", label: "Tổng quan", icon: LayoutDashboard },
   { href: "/workspace/admin/news", label: "Tin tức", icon: Newspaper },
+  { href: "/workspace/admin/members", label: "Thành viên", icon: ContactRound },
   { href: "/workspace/admin/settings", label: "Header & footer", icon: Settings2 },
   { href: "/workspace/admin/users", label: "Người dùng", icon: Users },
   { href: "/workspace/admin/submissions", label: "Bản thảo", icon: FileText },
