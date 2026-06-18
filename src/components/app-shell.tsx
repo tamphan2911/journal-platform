@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="hidden h-11 justify-end lg:flex">
             <nav
               aria-label="Khu vực người dùng"
-              className="flex min-w-[62%] items-center justify-end gap-1 rounded-bl-[48px] bg-[var(--uel-brand-blue)] pl-14 pr-5 text-white lg:gap-3 lg:pr-8"
+              className="flex min-w-[62%] items-center justify-end gap-1 rounded-l-[48px] bg-[var(--uel-brand-blue)] pl-14 pr-5 text-white lg:gap-3 lg:pr-8"
             >
               {audienceLinks.map((item) => (
                 <Link
