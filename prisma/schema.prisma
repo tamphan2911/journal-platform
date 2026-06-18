@@ -59,36 +59,71 @@ enum IssueStatus {
   ARCHIVED
 }
 
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 model User {
-  id                   String       @id @default(cuid())
-  email                String       @unique
-  passwordHash         String?
-  firstName            String?
-  lastName             String?
-  name                 String
-  role                 Role         @default(USER)
-  organization         String?
-  affiliation          String?
-  profession           String?
-  studentId            String?
-  major                String?
-  expertise            String[]     @default([])
-  orcid                String?
-  isActive             Boolean      @default(true)
-  termsAcceptedAt      DateTime?
-  emailVerifiedAt      DateTime?
-  lastLoginAt          DateTime?
-  authoredManuscripts  Manuscript[] @relation("AuthorSubmissions")
-  assignedManuscripts  Manuscript[] @relation("EditorAssignments")
-  reviews              Review[]
-  decisions            Decision[]
-  auditLogs            AuditLog[]
-  sessions             AuthSession[]
-  permissions          UserPermission[]
+  id                      String                   @id @default(cuid())
+  email                   String                   @unique
+  passwordHash            String?
+  firstName               String?
+  lastName                String?
+  name                    String
+  role                    Role                     @default(USER)
+  organization            String?
+  affiliation             String?
+  profession              String?
+  studentId               String?
+  major                   String?
+  expertise               String[]                 @default([])
+  orcid                   String?
+  isActive                Boolean                  @default(true)
+  termsAcceptedAt         DateTime?
+  emailVerifiedAt         DateTime?
+  lastLoginAt             DateTime?
+  authoredManuscripts     Manuscript[]             @relation("AuthorSubmissions")
+  assignedManuscripts     Manuscript[]             @relation("EditorAssignments")
+  reviews                 Review[]
+  decisions               Decision[]
+  auditLogs               AuditLog[]
+  sessions                AuthSession[]
+  permissions             UserPermission[]
   emailVerificationTokens EmailVerificationToken[]
-  passwordResetTokens  PasswordResetToken[]
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  passwordResetTokens     PasswordResetToken[]
+  newsPosts               NewsPost[]
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+}
+
+model NewsPost {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  summary     String
+  content     String
+  coverImage  String?
+  status      NewsStatus @default(DRAFT)
+  authorId    String?
+  publishedAt DateTime?
+  author      User?      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([authorId])
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  group     String
+  label     String
+  updatedAt DateTime @updatedAt
+
+  @@index([group])
 }
 
 model EmailVerificationToken {
@@ -116,15 +151,15 @@ model PasswordResetToken {
 }
 
 model AuthSession {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  tokenHash String   @unique
+  tokenHash String    @unique
   ipAddress String?
   userAgent String?
   expiresAt DateTime
   revokedAt DateTime?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
 
   @@index([userId, expiresAt])
 }
@@ -143,49 +178,49 @@ model UserPermission {
 }
 
 model JournalIssue {
-  id          String      @id @default(cuid())
+  id          String       @id @default(cuid())
   volume      Int
   number      Int
   year        Int
   title       String
   theme       String?
-  status      IssueStatus @default(DRAFT)
+  status      IssueStatus  @default(DRAFT)
   coverImage  String?
   publishedAt DateTime?
   articles    Article[]
   manuscripts Manuscript[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@unique([volume, number, year])
   @@index([year, status])
 }
 
 model Manuscript {
-  id               String             @id @default(cuid())
-  code             String             @unique
+  id               String           @id @default(cuid())
+  code             String           @unique
   title            String
   abstract         String
-  keywords         String[]           @default([])
+  keywords         String[]         @default([])
   field            String
-  language         String             @default("vi")
-  status           ManuscriptStatus   @default(SUBMITTED)
+  language         String           @default("vi")
+  status           ManuscriptStatus @default(SUBMITTED)
   authorId         String
   handlingEditorId String?
   issueId          String?
-  submittedAt      DateTime           @default(now())
+  submittedAt      DateTime         @default(now())
   dueAt            DateTime?
-  author           User               @relation("AuthorSubmissions", fields: [authorId], references: [id])
-  handlingEditor   User?              @relation("EditorAssignments", fields: [handlingEditorId], references: [id])
-  issue            JournalIssue?      @relation(fields: [issueId], references: [id])
+  author           User             @relation("AuthorSubmissions", fields: [authorId], references: [id])
+  handlingEditor   User?            @relation("EditorAssignments", fields: [handlingEditorId], references: [id])
+  issue            JournalIssue?    @relation(fields: [issueId], references: [id])
   files            SubmissionFile[]
   reviews          Review[]
   revisions        Revision[]
   decisions        Decision[]
   article          Article?
   auditLogs        AuditLog[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   @@index([status, submittedAt])
   @@index([authorId])

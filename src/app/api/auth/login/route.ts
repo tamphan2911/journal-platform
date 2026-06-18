@@ -6,7 +6,8 @@ import { prisma } from "@/lib/prisma";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  const parsed = loginSchema.safeParse(await request.json());
+  const body = await request.json();
+  const parsed = loginSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(
@@ -56,7 +57,9 @@ export async function POST(request: Request) {
     }),
   ]);
 
-  const response = NextResponse.json({ ok: true, redirectTo: "/" });
+  const requestedRedirect = typeof body.redirectTo === "string" ? body.redirectTo : "/";
+  const redirectTo = requestedRedirect.startsWith("/") && !requestedRedirect.startsWith("//") ? requestedRedirect : "/";
+  const response = NextResponse.json({ ok: true, redirectTo });
   response.cookies.set({
     name: "auth_session",
     value: token,

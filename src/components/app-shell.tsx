@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HeaderSearch } from "@/components/header-search";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const journalName = "Chuyên san Khoa học Kinh tế - Luật";
 
-const navItems = [
-  { href: "/gioi-thieu", label: "Giới thiệu" },
-  { href: "/luu-tru", label: "Đã xuất bản" },
-  { href: "/tin-tuc", label: "Tin tức" },
-];
-
-const audienceLinks = [
-  { href: "/tac-gia", label: "Thông tin cho tác giả" },
-  { href: "/nop-bai", label: "Nộp bài" },
-];
-
-export function AppShell({ children }: { children: React.ReactNode }) {
+export async function AppShell({ children }: { children: React.ReactNode }) {
+  const settings = await getSiteSettings();
+  const navItems = [
+    { href: "/gioi-thieu", label: settings.header_about_label },
+    { href: "/luu-tru", label: settings.header_published_label },
+    { href: "/tin-tuc", label: settings.header_news_label },
+  ];
+  const audienceLinks = [
+    { href: "/tac-gia", label: settings.header_author_label },
+    { href: "/nop-bai", label: "Nộp bài" },
+  ];
   return (
     <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] [--site-header-height:125px] lg:[--site-header-height:166px] xl:[--site-header-height:121px]">
       <header className="sticky top-0 z-30 bg-white shadow-[0_3px_14px_rgba(20,78,140,0.10)]">
@@ -132,6 +132,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <main>{children}</main>
+      <footer className="border-t border-[#d7e1ec] bg-white">
+        <div className="mx-auto grid max-w-[1320px] gap-5 px-4 py-7 text-sm md:grid-cols-[1fr_auto] md:px-8">
+          <div>
+            <p className="font-bold text-[var(--uel-brand-blue)]">Chuyên san Khoa học Kinh tế - Luật</p>
+            <p className="mt-2 text-[var(--muted)]">{settings.footer_address}</p>
+          </div>
+          <div className="space-y-1 text-[var(--muted)] md:text-right">
+            <p>{settings.footer_phone} · {settings.footer_email}</p>
+            <p>© {new Date().getFullYear()} {settings.footer_copyright}</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

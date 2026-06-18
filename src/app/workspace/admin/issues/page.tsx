@@ -1,0 +1,3 @@
+import { IssuesManager } from "@/components/admin-record-managers";
+import { prisma } from "@/lib/prisma";
+export default async function AdminIssuesPage() { const records = await prisma.journalIssue.findMany({ orderBy: [{ year: "desc" }, { volume: "desc" }, { number: "desc" }], include: { _count: { select: { articles: true } } } }); const items = records.map(({ _count, ...item }) => ({ ...item, articleCount: _count.articles })); return <div><p className="section-kicker">Kế hoạch xuất bản</p><h1 className="mt-2 text-3xl font-extrabold text-[var(--uel-navy)]">Tập & số</h1><div className="mt-6"><IssuesManager initialItems={items} /></div></div>; }

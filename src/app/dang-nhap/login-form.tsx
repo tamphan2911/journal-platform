@@ -9,7 +9,7 @@ type LoginState =
   | { status: "loading"; message?: string }
   | { status: "error"; message: string };
 
-export function LoginForm() {
+export function LoginForm({ redirectTo = "/" }: { redirectTo?: string }) {
   const router = useRouter();
   const [state, setState] = useState<LoginState>({ status: "idle" });
 
@@ -21,6 +21,7 @@ export function LoginForm() {
     const payload = {
       email: String(form.get("email") ?? ""),
       password: String(form.get("password") ?? ""),
+      redirectTo,
     };
 
     const parsed = loginSchema.safeParse(payload);
@@ -47,7 +48,7 @@ export function LoginForm() {
       return;
     }
 
-    router.push(result?.redirectTo ?? "/");
+    router.push(result?.redirectTo ?? redirectTo);
     router.refresh();
   }
 

@@ -1,0 +1,3 @@
+import { ArticlesManager } from "@/components/admin-record-managers";
+import { prisma } from "@/lib/prisma";
+export default async function AdminArticlesPage() { const items = await prisma.article.findMany({ orderBy: { publishedAt: "desc" }, select: { id: true, title: true, slug: true, pages: true, doi: true, pdfUrl: true, issue: { select: { volume: true, number: true, year: true } } } }); return <div><p className="section-kicker">Kho xuất bản</p><h1 className="mt-2 text-3xl font-extrabold text-[var(--uel-navy)]">Bài xuất bản</h1><div className="mt-6"><ArticlesManager initialItems={items} /></div></div>; }
