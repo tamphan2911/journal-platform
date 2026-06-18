@@ -30,8 +30,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="hidden h-11 justify-end lg:flex">
             <nav
               aria-label="Khu vực người dùng"
-              className="flex min-w-[62%] items-center justify-end gap-1 rounded-l-[48px] bg-[var(--uel-brand-blue)] pl-14 pr-5 text-white lg:gap-3 lg:pr-8"
+              className="relative flex min-w-[62%] items-center justify-end gap-1 bg-[var(--uel-brand-blue)] pl-14 pr-5 text-white lg:gap-3 lg:pr-8"
             >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 160 44"
+                preserveAspectRatio="none"
+                className="pointer-events-none absolute -left-40 top-0 h-11 w-40 text-[var(--uel-brand-blue)]"
+              >
+                <path d="M0 0 C80 0 80 44 160 44 L160 0 Z" fill="currentColor" />
+              </svg>
               {audienceLinks.map((item) => (
                 <Link
                   key={item.href}
