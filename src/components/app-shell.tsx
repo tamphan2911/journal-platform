@@ -5,62 +5,56 @@ import { HeaderSearch } from "@/components/header-search";
 const journalName = "Chuyên san Khoa học Kinh tế - Luật";
 
 const navItems = [
-  { href: "/", label: "Tạp chí" },
   { href: "/gioi-thieu", label: "Giới thiệu" },
-  { href: "/luu-tru", label: "Lưu trữ" },
-  { href: "/tac-gia", label: "Tác giả" },
-  { href: "/phan-bien", label: "Phản biện" },
-  { href: "/nop-bai", label: "Nộp bài" },
+  { href: "/luu-tru", label: "Đã xuất bản" },
+  { href: "/tin-tuc", label: "Tin tức" },
 ];
 
 const audienceLinks = [
-  { href: "/workspace/author", label: "Tác giả" },
-  { href: "/workspace/reviewer", label: "Phản biện viên" },
-  { href: "/workspace/editor", label: "Ban biên tập" },
-  { href: "/workspace/admin", label: "Quản trị" },
+  { href: "/tac-gia", label: "Thông tin cho tác giả" },
+  { href: "/nop-bai", label: "Nộp bài" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] [--site-header-height:135px] lg:[--site-header-height:179px] xl:[--site-header-height:134px]">
+    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] [--site-header-height:125px] lg:[--site-header-height:166px] xl:[--site-header-height:121px]">
       <header className="sticky top-0 z-30 bg-white shadow-[0_3px_14px_rgba(20,78,140,0.10)]">
         <div className="h-1 bg-[var(--uel-brand-blue)]" />
 
         <div className="relative mx-auto max-w-[1536px]">
-          <div className="hidden h-11 justify-end lg:flex">
+          <div className="hidden h-[41px] justify-end lg:flex">
             <nav
               aria-label="Khu vực người dùng"
               className="relative flex min-w-[62%] items-center justify-end gap-1 bg-[var(--uel-brand-blue)] pl-14 pr-5 text-white lg:gap-3 lg:pr-8"
             >
               <svg
                 aria-hidden="true"
-                viewBox="0 0 160 44"
+                viewBox="0 0 160 41"
                 preserveAspectRatio="none"
-                className="pointer-events-none absolute -left-40 top-0 h-11 w-40 text-[var(--uel-brand-blue)]"
+                className="pointer-events-none absolute -left-40 top-0 h-[41px] w-40 text-[var(--uel-brand-blue)]"
               >
-                <path d="M0 0 C80 0 80 44 160 44 L160 0 Z" fill="currentColor" />
+                <path d="M0 0 C80 0 80 41 160 41 L160 0 Z" fill="currentColor" />
               </svg>
               {audienceLinks.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="px-2 py-3 text-xs font-semibold transition-colors hover:text-[#ffd269] lg:text-sm"
+                  className="px-2 py-2.5 text-xs font-semibold transition-colors hover:text-[#ffd269] lg:text-sm"
                 >
                   {item.label}
                 </Link>
               ))}
-              <span className="mx-1 h-4 w-px bg-white/30" />
+              <span className="mx-1 text-white/55" aria-hidden="true">|</span>
               <Link
                 href="/dang-nhap"
-                className="px-2 py-3 text-xs font-bold transition-colors hover:text-[#ffd269] lg:text-sm"
+                className="px-2 py-2.5 text-xs font-bold transition-colors hover:text-[#ffd269] lg:text-sm"
               >
                 Đăng nhập
               </Link>
-              <span className="hidden text-xs font-semibold text-white/70 lg:inline">VI | EN</span>
             </nav>
           </div>
 
-          <div className="flex min-h-[86px] items-center justify-between gap-5 px-4 py-2 md:px-8 xl:py-1">
+          <div className="flex min-h-[76px] items-center justify-between gap-5 px-4 py-1 md:px-8">
             <Link
               href="/"
               className="min-w-0 shrink lg:absolute lg:left-8 lg:top-2 lg:z-10"
@@ -74,9 +68,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 alt="Trường Đại học Kinh tế - Luật, Đại học Quốc gia Thành phố Hồ Chí Minh"
                 className="h-auto w-[280px] max-w-full sm:w-[340px] lg:w-[360px] xl:w-[390px]"
               />
-              <span className="mt-0.5 block border-l-4 border-[var(--uel-gold)] pl-2 text-[9px] font-extrabold uppercase leading-4 text-[var(--uel-brand-blue)] sm:text-[10px] lg:text-[11px]">
-                {journalName}
-              </span>
             </Link>
             <span className="hidden w-[360px] shrink-0 lg:block xl:w-[390px]" aria-hidden="true" />
 
@@ -119,6 +110,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {item.label}
               </Link>
             ))}
+            <Link
+              href="/tac-gia"
+              className="flex h-8 shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[var(--uel-brand-blue)] transition-colors hover:bg-[#edf4fb]"
+            >
+              Thông tin cho tác giả
+            </Link>
+            <Link
+              href="/nop-bai"
+              className="flex h-8 shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[var(--uel-brand-blue)] transition-colors hover:bg-[#edf4fb]"
+            >
+              Nộp bài
+            </Link>
             <Link
               href="/dang-nhap"
               className="flex h-8 shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[#a44124] sm:hidden"
