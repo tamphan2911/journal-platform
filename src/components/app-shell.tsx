@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 const journalName = "Chuyên san Khoa học Kinh tế - Luật";
 
@@ -8,91 +10,119 @@ const navItems = [
   { href: "/luu-tru", label: "Lưu trữ" },
   { href: "/tac-gia", label: "Tác giả" },
   { href: "/phan-bien", label: "Phản biện" },
-  { href: "/workspace", label: "Workspace" },
+  { href: "/nop-bai", label: "Nộp bài" },
 ];
 
-const authLinks = [
-  { href: "/dang-nhap", label: "Đăng nhập" },
-  { href: "/dang-ky", label: "Đăng ký" },
+const audienceLinks = [
+  { href: "/workspace/author", label: "Tác giả" },
+  { href: "/workspace/reviewer", label: "Phản biện viên" },
+  { href: "/workspace/editor", label: "Ban biên tập" },
+  { href: "/workspace/admin", label: "Quản trị" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] [--site-header-height:129px] sm:[--site-header-height:146px] xl:[--site-header-height:97px]">
-      <header className="sticky top-0 z-30 border-b border-[#d8e1ef] bg-white/96 shadow-sm shadow-[#002b5c]/5 backdrop-blur">
-        <div className="hidden bg-[var(--uel-navy)] text-white sm:block">
-          <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-1.5 text-xs md:px-8">
-            <span>Trường Đại học Kinh tế - Luật, ĐHQG-HCM</span>
-            <span className="hidden text-white/75 sm:inline">
-              Nghiên cứu - Công bố khoa học - Phản biện học thuật
-            </span>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[var(--page-bg)] text-[var(--ink)] [--site-header-height:135px] lg:[--site-header-height:179px] xl:[--site-header-height:134px]">
+      <header className="sticky top-0 z-30 bg-white shadow-[0_3px_14px_rgba(20,78,140,0.10)]">
+        <div className="h-1 bg-[var(--uel-brand-blue)]" />
 
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-2.5 md:px-8 md:py-3">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Trang chủ Chuyên san">
-            <BrandMark />
-            <span className="min-w-0">
-              <span className="block truncate text-[10px] font-extrabold uppercase text-[var(--nav-blue)]">
-                UEL Journal Platform
-              </span>
-              <span className="block truncate text-lg font-bold leading-5 text-[var(--uel-navy)] md:text-xl">
+        <div className="relative mx-auto max-w-[1536px]">
+          <div className="hidden h-11 justify-end lg:flex">
+            <nav
+              aria-label="Khu vực người dùng"
+              className="flex min-w-[62%] items-center justify-end gap-1 rounded-bl-[48px] bg-[var(--uel-brand-blue)] pl-14 pr-5 text-white lg:gap-3 lg:pr-8"
+            >
+              {audienceLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="px-2 py-3 text-xs font-semibold transition-colors hover:text-[#ffd269] lg:text-sm"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <span className="mx-1 h-4 w-px bg-white/30" />
+              <Link
+                href="/dang-nhap"
+                className="px-2 py-3 text-xs font-bold transition-colors hover:text-[#ffd269] lg:text-sm"
+              >
+                Đăng nhập
+              </Link>
+              <span className="hidden text-xs font-semibold text-white/70 lg:inline">VI | EN</span>
+            </nav>
+          </div>
+
+          <div className="flex min-h-[86px] items-center justify-between gap-5 px-4 py-2 md:px-8 xl:py-1">
+            <Link
+              href="/"
+              className="min-w-0 shrink lg:absolute lg:left-8 lg:top-2 lg:z-10"
+              aria-label={`Trang chủ ${journalName}`}
+            >
+              <Image
+                src="/uel-logo.svg"
+                width={455}
+                height={80}
+                priority
+                alt="Trường Đại học Kinh tế - Luật, Đại học Quốc gia Thành phố Hồ Chí Minh"
+                className="h-auto w-[280px] max-w-full sm:w-[340px] lg:w-[360px] xl:w-[390px]"
+              />
+              <span className="mt-0.5 block border-l-4 border-[var(--uel-gold)] pl-2 text-[9px] font-extrabold uppercase leading-4 text-[var(--uel-brand-blue)] sm:text-[10px] lg:text-[11px]">
                 {journalName}
               </span>
-            </span>
-          </Link>
+            </Link>
+            <span className="hidden w-[360px] shrink-0 lg:block xl:w-[390px]" aria-hidden="true" />
 
-          <nav className="hidden items-center gap-0.5 xl:flex">
+            <nav aria-label="Điều hướng chính" className="hidden items-center justify-end xl:flex">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="relative px-3 py-4 text-[13px] font-extrabold uppercase text-[var(--uel-brand-blue)] transition-colors after:absolute after:inset-x-3 after:bottom-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[var(--uel-gold)] after:transition-transform hover:text-[#0b3768] hover:after:scale-x-100 2xl:px-4 2xl:text-sm"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Link
+                href="/luu-tru"
+                aria-label="Tìm kiếm bài viết"
+                title="Tìm kiếm bài viết"
+                className="ml-2 grid size-10 place-items-center text-[#ef5a2c] transition-colors hover:text-[var(--uel-brand-blue)]"
+              >
+                <Search size={23} strokeWidth={2.2} />
+              </Link>
+            </nav>
+
+            <Link
+              href="/dang-nhap"
+              className="hidden shrink-0 border border-[var(--uel-brand-blue)] px-3 py-2 text-xs font-bold text-[var(--uel-brand-blue)] transition-colors hover:bg-[var(--uel-brand-blue)] hover:text-white md:inline-flex xl:hidden"
+            >
+              Đăng nhập
+            </Link>
+          </div>
+
+          <nav
+            aria-label="Điều hướng trên thiết bị di động"
+            className="flex gap-1 overflow-x-auto border-t border-[#e6edf5] px-4 py-1.5 xl:hidden"
+          >
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="inline-flex items-center rounded-[4px] px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-[#eef4fb] hover:text-[var(--nav-blue)]"
+                className="flex h-8 shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[var(--uel-brand-blue)] transition-colors hover:bg-[#edf4fb]"
               >
                 {item.label}
               </Link>
             ))}
-          </nav>
-
-          <div className="hidden items-center gap-2 md:flex">
-            {authLinks.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`inline-flex items-center rounded-[4px] px-3 py-2 text-sm font-extrabold transition ${
-                  index === 0
-                    ? "border border-[#cbd8ea] bg-white text-[var(--uel-navy)] hover:bg-[#f7faff]"
-                    : "bg-[var(--uel-gold)] text-[var(--uel-navy)] hover:bg-[#ffc84a]"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <nav className="flex gap-2 overflow-x-auto border-t border-[#edf1f7] px-4 py-1.5 xl:hidden">
-          {[...navItems, ...authLinks].map((item) => (
             <Link
-              key={item.href}
-              href={item.href}
-              className="flex h-9 shrink-0 items-center rounded-[4px] border border-[#dbe4f1] bg-white px-3 text-xs font-bold text-slate-600"
+              href="/dang-nhap"
+              className="flex h-8 shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[#a44124] sm:hidden"
             >
-              {item.label}
+              Đăng nhập
             </Link>
-          ))}
-        </nav>
+          </nav>
+        </div>
       </header>
       <main>{children}</main>
     </div>
-  );
-}
-
-function BrandMark() {
-  return (
-    <span className="relative grid h-11 w-11 flex-none place-items-center overflow-hidden rounded-[6px] bg-[var(--nav-blue)] text-white shadow-md shadow-[#004b93]/16">
-      <span className="absolute inset-x-0 top-0 h-1.5 bg-[var(--uel-gold)]" />
-      <span className="text-sm font-extrabold">UEL</span>
-    </span>
   );
 }
