@@ -1,6 +1,7 @@
-import { BookOpenCheck, FileText, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { HeroSlider } from "@/components/hero-slider";
+import { UelIcon } from "@/components/uel-icon";
+import type { UelIconName } from "@/lib/uel-icons";
 import { roleJurisdictions, workflow } from "@/lib/journal-data";
 
 export default function Home() {
@@ -32,25 +33,26 @@ export default function Home() {
               {
                 title: "Chuẩn học thuật",
                 text: "Biểu mẫu metadata, phản biện kín và nhật ký quyết định được chuẩn hóa cho tòa soạn.",
-                icon: ShieldCheck,
+                icon: "qualityAssurance" as UelIconName,
               },
               {
                 title: "Hồ sơ minh bạch",
                 text: "Tác giả, phản biện và biên tập viên theo dõi từng vòng xử lý trên cùng một nền tảng.",
-                icon: FileText,
+                icon: "myUel" as UelIconName,
               },
               {
                 title: "Lưu trữ dài hạn",
                 text: "Số xuất bản, bài viết, tệp bản thảo và lịch sử xử lý được tổ chức cho tra cứu lâu dài.",
-                icon: BookOpenCheck,
+                icon: "library" as UelIconName,
               },
             ].map((item) => {
-              const Icon = item.icon;
               return (
-                <article key={item.title} className="panel p-5">
-                  <Icon className="text-[var(--nav-blue)]" size={30} />
-                  <h3 className="mt-4 text-2xl font-bold text-[var(--uel-navy)]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{item.text}</p>
+                <article key={item.title} className="panel min-h-56 p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="uel-block-title max-w-[12rem] text-2xl">{item.title}</h3>
+                    <UelIcon name={item.icon} size={56} />
+                  </div>
+                  <p className="uel-block-copy mt-7 text-sm">{item.text}</p>
                 </article>
               );
             })}

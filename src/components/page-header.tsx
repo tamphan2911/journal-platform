@@ -27,8 +27,8 @@ export function InfoCard({
 }) {
   return (
     <section className="panel p-5 md:p-6">
-      <h2 className="text-2xl font-bold text-[var(--uel-navy)]">{title}</h2>
-      <div className="mt-4 text-sm leading-7 text-[var(--muted)]">{children}</div>
+      <h2 className="uel-block-title text-2xl">{title}</h2>
+      <div className="uel-block-copy mt-4 text-sm leading-7">{children}</div>
     </section>
   );
 }

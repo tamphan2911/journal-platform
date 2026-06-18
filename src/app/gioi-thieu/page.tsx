@@ -26,13 +26,13 @@ export default function AboutPage() {
           </InfoCard>
         </div>
         <div className="mt-6 panel p-5 md:p-6">
-          <h2 className="text-3xl font-bold text-[var(--uel-navy)]">Jurisdiction theo vai trò</h2>
+          <h2 className="uel-block-title text-3xl">Jurisdiction theo vai trò</h2>
           <div className="mt-5 grid gap-4 lg:grid-cols-5">
             {roleJurisdictions.map((role) => (
               <article key={role.code} className="rounded-[4px] border border-[#dbe6f7] bg-white p-4">
                 <p className="text-xs font-extrabold text-[var(--nav-blue)]">{role.code}</p>
-                <h3 className="mt-2 text-xl font-bold text-[var(--uel-navy)]">{role.role}</h3>
-                <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{role.scope}</p>
+                <h3 className="uel-block-title mt-2 text-xl">{role.role}</h3>
+                <p className="uel-block-copy mt-2 text-sm">{role.scope}</p>
               </article>
             ))}
           </div>
