@@ -53,7 +53,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
             <Link
               href="/"
-              className="z-10 min-w-0 shrink"
+              className="z-10 flex min-w-0 shrink items-center gap-2.5 max-[359px]:gap-1.5 sm:gap-3"
               aria-label={`Trang chủ ${journalName}`}
             >
               <Image
@@ -62,8 +62,16 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                 height={512}
                 priority
                 alt="Chuyên san Tài chính và Công nghệ ứng dụng BFAT"
-                className="size-[50px] object-contain sm:size-[54px] lg:size-[62px] xl:size-[68px]"
+                className="size-[50px] object-contain max-[359px]:size-[44px] sm:size-[54px] lg:size-[62px] xl:size-[68px]"
               />
+              <span className="min-w-0 text-[var(--uel-brand-blue)]">
+                <span className="block whitespace-nowrap text-[7px] font-semibold leading-tight max-[359px]:text-[5.5px] sm:text-[9px] lg:text-[10px] xl:text-[11px]">
+                  Khoa Tài chính - Ngân hàng, Trường ĐH Kinh tế - Luật, ĐHQG HCM
+                </span>
+                <span className="mt-1 block whitespace-nowrap text-[10px] font-extrabold uppercase leading-tight max-[359px]:text-[7.5px] sm:text-[13px] lg:text-[15px] xl:text-[17px]">
+                  Chuyên san Tài chính &amp; Công Nghệ ứng dụng
+                </span>
+              </span>
             </Link>
 
             <nav aria-label="Điều hướng chính" className="hidden h-12 self-end items-center justify-end xl:flex">
