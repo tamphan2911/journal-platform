@@ -2,16 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { HeaderSearch } from "@/components/header-search";
+import { getCurrentUser } from "@/lib/session";
 import { getSiteSettings } from "@/lib/site-settings";
 
 const journalName = "Chuyên san Khoa học Kinh tế - Luật";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
-  const settings = await getSiteSettings();
+  const [settings, user] = await Promise.all([getSiteSettings(), getCurrentUser()]);
   const navItems = [
     { href: "/gioi-thieu", label: settings.header_about_label },
     { href: "/luu-tru", label: settings.header_published_label },
     { href: "/tin-tuc", label: settings.header_news_label },
+    ...(user?.role === "ADMIN" ? [{ href: "/workspace/admin", label: "Quản trị" }] : []),
   ];
   const audienceLinks = [
     { href: "/tac-gia", label: settings.header_author_label },
