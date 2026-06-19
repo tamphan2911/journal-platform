@@ -27,7 +27,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         <div className="relative mx-auto h-[58px] max-w-[1536px] lg:h-[70px] xl:h-[76px]">
           <nav
             aria-label="Khu vực người dùng"
-            className="absolute right-0 top-0 hidden h-7 min-w-[58%] items-center justify-end gap-2 bg-[var(--uel-brand-blue)] pl-12 pr-8 text-white lg:flex"
+            className="absolute right-0 top-0 hidden h-7 min-w-[56%] items-center justify-end gap-2 bg-[var(--uel-brand-blue)] pl-12 pr-8 text-white lg:flex"
           >
             <svg
               aria-hidden="true"
