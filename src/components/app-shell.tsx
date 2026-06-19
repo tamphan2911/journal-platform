@@ -68,7 +68,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               />
               <span className="min-w-0 text-[var(--uel-brand-blue)]">
                 <span className="block whitespace-nowrap text-[7px] font-semibold leading-tight max-[359px]:text-[5.5px] sm:text-[9px] lg:text-[10px] xl:text-[11px]">
-                  Khoa Tài chính - Ngân hàng, Trường ĐH Kinh tế - Luật, ĐHQG HCM
+                  KHOA TÀI CHÍNH - NGÂN HÀNG, TRƯỜNG ĐH KINH TẾ - LUẬT, ĐHQG HCM
                 </span>
                 <span className="mt-1 block whitespace-nowrap text-[10px] font-extrabold uppercase leading-tight max-[359px]:text-[7.5px] sm:text-[13px] lg:text-[15px] xl:text-[17px]">
                   Chuyên san Tài chính &amp; Công Nghệ ứng dụng
