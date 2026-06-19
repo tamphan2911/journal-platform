@@ -11,10 +11,12 @@ const journalName = "Chuyên san Khoa học Kinh tế - Luật";
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const [settings, user] = await Promise.all([getSiteSettings(), getCurrentUser()]);
   const navItems = [
+    { href: "/", label: "Trang chủ" },
     { href: "/gioi-thieu", label: settings.header_about_label },
     { href: "/luu-tru", label: settings.header_published_label },
     { href: "/tin-tuc", label: settings.header_news_label },
     ...(user?.role === "ADMIN" ? [{ href: "/workspace/admin", label: "Quản trị" }] : []),
+    { href: "/lien-he", label: "Liên hệ" },
   ];
   const audienceLinks = [
     { href: "/tac-gia", label: settings.header_author_label },
