@@ -10,8 +10,13 @@ const beVietnam = Be_Vietnam_Pro({
 
 export const metadata: Metadata = {
   title: "Chuyên san Khoa học Kinh tế - Luật | UEL",
+  applicationName: "BFAT Journal Platform",
   description:
     "Nền tảng tạp chí học thuật cho nộp bài, phản biện, biên tập, quản trị và lưu trữ số xuất bản.",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "512x512" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({

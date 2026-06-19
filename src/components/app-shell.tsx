@@ -57,12 +57,12 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               aria-label={`Trang chủ ${journalName}`}
             >
               <Image
-                src="/uel-logo.svg"
-                width={455}
-                height={80}
+                src="/brand/bfat-logo.png"
+                width={512}
+                height={512}
                 priority
-                alt="Trường Đại học Kinh tế - Luật, Đại học Quốc gia Thành phố Hồ Chí Minh"
-                className="h-auto w-[238px] max-w-full sm:w-[275px] lg:w-[318px] xl:w-[342px]"
+                alt="Chuyên san Tài chính và Công nghệ ứng dụng BFAT"
+                className="size-[50px] object-contain sm:size-[54px] lg:size-[62px] xl:size-[68px]"
               />
             </Link>
 
@@ -122,14 +122,21 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       <footer className="border-t-4 border-[var(--uel-gold)] bg-[var(--uel-navy)] text-white">
         <div className="mx-auto grid max-w-[1320px] gap-10 px-4 py-10 md:grid-cols-[1.35fr_0.75fr_1fr] md:px-8 lg:gap-14 lg:py-12">
           <div>
-            <Image
-              src="/uel-logo.svg"
-              width={455}
-              height={80}
-              alt="Trường Đại học Kinh tế - Luật"
-              className="h-auto w-[310px] max-w-full brightness-0 invert"
-            />
-            <p className="mt-5 max-w-md text-lg font-bold leading-7 text-white">{journalName}</p>
+            <div className="flex items-center gap-4">
+              <div className="grid size-[92px] shrink-0 place-items-center overflow-hidden rounded-full bg-white p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+                <Image
+                  src="/brand/bfat-logo.png"
+                  width={512}
+                  height={512}
+                  alt="Chuyên san Tài chính và Công nghệ ứng dụng BFAT"
+                  className="size-full object-contain"
+                />
+              </div>
+              <div>
+                <p className="text-xs font-extrabold uppercase tracking-wide text-[#ffd269]">BFAT</p>
+                <p className="mt-1 max-w-sm text-base font-bold leading-6 text-white">{journalName}</p>
+              </div>
+            </div>
             <p className="mt-2 max-w-md text-sm leading-6 text-white/68">
               Công bố và lan tỏa các nghiên cứu có giá trị trong lĩnh vực kinh tế, luật, quản trị và chính sách công.
             </p>
