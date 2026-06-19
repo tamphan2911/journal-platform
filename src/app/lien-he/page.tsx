@@ -1,22 +1,8 @@
-import { Clock3, Mail, MapPin, Phone, Send, UserRoundCheck } from "lucide-react";
+import { Clock3, Mail, MapPin, Phone } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { ContactForm } from "@/components/contact-form";
 import { PageHeader } from "@/components/page-header";
 import { getSiteSettings } from "@/lib/site-settings";
-
-const contactPurposes = [
-  {
-    title: "Nộp bài và hồ sơ tác giả",
-    detail: "Hỗ trợ tài khoản, quy trình nộp bản thảo, metadata và yêu cầu định dạng.",
-  },
-  {
-    title: "Phản biện và biên tập",
-    detail: "Trao đổi về lời mời phản biện, thời hạn xử lý và các vòng chỉnh sửa bản thảo.",
-  },
-  {
-    title: "Xuất bản và hợp tác",
-    detail: "Thông tin về số xuất bản, bản quyền, truyền thông học thuật và đề xuất hợp tác.",
-  },
-];
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
@@ -34,25 +20,7 @@ export default async function ContactPage() {
 
         <div className="mt-9 grid gap-8 lg:grid-cols-[minmax(0,1fr)_390px] lg:gap-12">
           <main>
-            <div className="divide-y divide-[#dbe4ee] border-y border-[#dbe4ee]">
-              {contactPurposes.map((item, index) => (
-                <article key={item.title} className="grid gap-3 py-6 sm:grid-cols-[48px_210px_minmax(0,1fr)] sm:items-start">
-                  <span className="text-sm font-extrabold text-[var(--uel-gold)]">{String(index + 1).padStart(2, "0")}</span>
-                  <h2 className="uel-block-title text-lg">{item.title}</h2>
-                  <p className="uel-block-copy text-sm leading-7">{item.detail}</p>
-                </article>
-              ))}
-            </div>
-
-            <div className="mt-9 border-l-4 border-[var(--uel-gold)] bg-[#fff9e9] p-5">
-              <div className="flex items-start gap-3">
-                <UserRoundCheck size={21} className="mt-0.5 shrink-0 text-[var(--uel-brand-blue)]" />
-                <div>
-                  <h2 className="font-extrabold text-[var(--uel-navy)]">Khi liên hệ về bản thảo</h2>
-                  <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Vui lòng ghi rõ mã bản thảo, tên bài viết và email tài khoản đã dùng để nộp bài. Không gửi bản thảo hoặc dữ liệu nghiên cứu nhạy cảm qua các kênh không chính thức.</p>
-                </div>
-              </div>
-            </div>
+            <ContactForm recipientEmail={settings.footer_email} />
           </main>
 
           <aside className="panel self-start overflow-hidden">
@@ -76,9 +44,6 @@ export default async function ContactPage() {
                   <span><span className="block text-xs font-bold text-[var(--muted)]">Thời gian phản hồi</span><span className="mt-1 block text-sm font-bold leading-6 text-[var(--uel-navy)]">Trong vòng 2-3 ngày làm việc</span></span>
                 </div>
               </div>
-              <a href={`mailto:${settings.footer_email}?subject=${encodeURIComponent("Liên hệ Chuyên san")}`} className="mt-7 inline-flex h-11 w-full items-center justify-center gap-2 bg-[var(--uel-brand-blue)] px-4 text-sm font-bold text-white hover:bg-[var(--uel-navy)]">
-                <Send size={17} /> Gửi email cho tòa soạn
-              </a>
             </div>
           </aside>
         </div>
