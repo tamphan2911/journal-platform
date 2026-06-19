@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { HeaderSearch } from "@/components/header-search";
+import { UserMenu } from "@/components/user-menu";
 import { getCurrentUser } from "@/lib/session";
 import { getSiteSettings } from "@/lib/site-settings";
 
@@ -47,9 +48,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
             <span className="mx-1 text-white/55" aria-hidden="true">|</span>
-            <Link href="/dang-nhap" className="px-2 py-1 text-xs font-bold transition-colors hover:text-[#ffd269]">
-              Đăng nhập
-            </Link>
+            {user ? <UserMenu name={user.name} avatarId={user.avatarId} dark /> : (
+              <Link href="/dang-nhap" className="px-2 py-1 text-xs font-bold transition-colors hover:text-[#ffd269]">Đăng nhập</Link>
+            )}
           </nav>
 
           <div className="flex h-full items-center justify-between gap-4 px-4 md:px-8">
@@ -92,12 +93,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             </nav>
 
             <div className="flex items-center self-end pb-2 xl:hidden">
-              <Link
-                href="/dang-nhap"
-                className="hidden shrink-0 border border-[var(--uel-brand-blue)] px-3 py-2 text-xs font-bold text-[var(--uel-brand-blue)] transition-colors hover:bg-[var(--uel-brand-blue)] hover:text-white md:inline-flex lg:hidden"
-              >
-                Đăng nhập
-              </Link>
+              {user ? <UserMenu name={user.name} avatarId={user.avatarId} className="mr-1 lg:hidden" /> : (
+                <Link href="/dang-nhap" className="hidden shrink-0 border border-[var(--uel-brand-blue)] px-3 py-2 text-xs font-bold text-[var(--uel-brand-blue)] transition-colors hover:bg-[var(--uel-brand-blue)] hover:text-white md:inline-flex lg:hidden">Đăng nhập</Link>
+              )}
               <HeaderSearch compact />
             </div>
           </div>
@@ -123,9 +121,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           <Link href="/nop-bai" className="flex h-[34px] shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[var(--uel-brand-blue)] transition-colors hover:bg-[#edf4fb]">
             Nộp bài
           </Link>
-          <Link href="/dang-nhap" className="flex h-[34px] shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[#a44124] sm:hidden">
-            Đăng nhập
-          </Link>
+          {!user ? <Link href="/dang-nhap" className="flex h-[34px] shrink-0 items-center px-2.5 text-[11px] font-extrabold uppercase text-[#a44124] sm:hidden">Đăng nhập</Link> : null}
         </nav>
       </header>
       <main>{children}</main>

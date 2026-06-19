@@ -10,7 +10,7 @@ const roles = Object.keys(roleLabels);
 const manuscriptStatuses = ["DRAFT", "SUBMITTED", "SCREENING", "ASSIGNED", "UNDER_REVIEW", "REVISION_REQUESTED", "REVISED", "ACCEPTED", "REJECTED", "PUBLISHED"];
 const issueStatuses = ["DRAFT", "OPEN", "PUBLISHED", "ARCHIVED"];
 
-export function UsersManager({ initialUsers }: { initialUsers: Array<{ id: string; name: string; email: string; role: string; isActive: boolean; organization: string | null }> }) {
+export function UsersManager({ initialUsers }: { initialUsers: Array<{ id: string; name: string; email: string; role: string; isActive: boolean; organization: string | null; phone: string | null; facebookUrl: string | null }> }) {
   const [users, setUsers] = useState(initialUsers);
   const [message, setMessage] = useState("");
   async function update(user: (typeof users)[number]) {
@@ -19,11 +19,12 @@ export function UsersManager({ initialUsers }: { initialUsers: Array<{ id: strin
     setMessage(response.ok ? `Đã cập nhật ${user.email}.` : result.error ?? "Không thể cập nhật.");
   }
   return (
-    <AdminTable headers={["Người dùng", "Đơn vị", "Vai trò", "Hoạt động", ""]} message={message}>
+    <AdminTable headers={["Người dùng", "Đơn vị", "Liên hệ", "Vai trò", "Hoạt động", ""]} message={message}>
       {users.map((user) => (
         <tr key={user.id} className="border-t border-[#e2e8f0] align-top">
           <Cell><p className="font-bold text-[var(--uel-brand-blue)]">{user.name}</p><p className="mt-1 text-xs text-[var(--muted)]">{user.email}</p></Cell>
           <Cell>{user.organization ?? "-"}</Cell>
+          <Cell><p>{user.phone ?? "-"}</p>{user.facebookUrl ? <a href={user.facebookUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs font-semibold text-[var(--uel-brand-blue)] hover:underline">Facebook</a> : null}</Cell>
           <Cell><select className="field min-w-40" value={user.role} onChange={(event) => setUsers((current) => current.map((item) => item.id === user.id ? { ...item, role: event.target.value } : item))}>{roles.map((role) => <option key={role} value={role}>{roleLabels[role]}</option>)}</select></Cell>
           <Cell><label className="inline-flex items-center gap-2"><input type="checkbox" checked={user.isActive} onChange={(event) => setUsers((current) => current.map((item) => item.id === user.id ? { ...item, isActive: event.target.checked } : item))} />{user.isActive ? "Có" : "Không"}</label></Cell>
           <Cell><SaveButton onClick={() => update(user)} /></Cell>

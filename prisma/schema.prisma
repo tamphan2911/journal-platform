@@ -84,6 +84,9 @@ model User {
   organization            String?
   affiliation             String?
   profession              String?
+  phone                   String?
+  facebookUrl             String?
+  avatarId                String?                  @unique
   studentId               String?
   major                   String?
   expertise               String[]                 @default([])
@@ -102,6 +105,9 @@ model User {
   emailVerificationTokens EmailVerificationToken[]
   passwordResetTokens     PasswordResetToken[]
   newsPosts               NewsPost[]
+  avatar                  MediaAsset?              @relation("UserAvatar", fields: [avatarId], references: [id], onDelete: SetNull)
+  uploadedAssets          MediaAsset[]             @relation("AssetUploader")
+  journalMemberships      JournalMember[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
 }
@@ -136,21 +142,43 @@ model SiteSetting {
 
 model JournalMember {
   id            String      @id @default(cuid())
+  userId        String?
   name          String
   academicTitle String?
   role          String
   organization  String?
   bio           String
+  note          String?
   email         String?
   photoUrl      String?
   group         MemberGroup
   term          String      @default("2024-2025")
   sortOrder     Int         @default(0)
   isActive      Boolean     @default(true)
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
   @@index([term, group, isActive, sortOrder])
+  @@index([userId])
+  @@unique([userId, group, term])
+}
+
+model MediaAsset {
+  id           String   @id @default(cuid())
+  fileName     String
+  mimeType     String
+  sizeBytes    Int
+  width        Int?
+  height       Int?
+  data         Bytes
+  uploadedById String?
+  uploadedBy   User?    @relation("AssetUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  avatarFor    User?    @relation("UserAvatar")
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([uploadedById])
 }
 
 model EmailVerificationToken {

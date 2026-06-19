@@ -4,20 +4,10 @@ import { z } from "zod";
 import { memberGroups, type PublicJournalMember } from "@/lib/member-types";
 import { prisma } from "@/lib/prisma";
 
-const optionalImage = z
-  .string()
-  .trim()
-  .max(500)
-  .refine((value) => !value || value.startsWith("/") || URL.canParse(value), "Đường dẫn ảnh không hợp lệ.");
-
 export const journalMemberInputSchema = z.object({
-  name: z.string().trim().min(2).max(120),
-  academicTitle: z.string().trim().max(40).optional().default(""),
+  userId: z.string().trim().min(1),
   role: z.string().trim().min(2).max(140),
-  organization: z.string().trim().max(220).optional().default(""),
-  bio: z.string().trim().min(10).max(1200),
-  email: z.union([z.literal(""), z.string().trim().email()]).optional().default(""),
-  photoUrl: optionalImage.optional().default(""),
+  note: z.string().trim().max(1200).optional().default(""),
   group: z.enum(memberGroups),
   term: z.string().trim().regex(/^\d{4}-\d{4}$/, "Nhiệm kỳ phải có định dạng 2024-2025."),
   sortOrder: z.coerce.number().int().min(0).max(9999),
@@ -99,18 +89,41 @@ const readJournalMembers = unstable_cache(
       orderBy: [{ term: "desc" }, { group: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
       select: {
         id: true,
+        userId: true,
         name: true,
         academicTitle: true,
         role: true,
         organization: true,
         bio: true,
+        note: true,
         email: true,
         photoUrl: true,
         group: true,
         term: true,
         sortOrder: true,
+        user: {
+          select: {
+            name: true,
+            email: true,
+            organization: true,
+            profession: true,
+            avatarId: true,
+          },
+        },
       },
-    }),
+    }).then((members) => members.map((member) => ({
+      id: member.id,
+      name: member.user?.name ?? member.name,
+      academicTitle: member.user?.profession ?? member.academicTitle,
+      role: member.role,
+      organization: member.user?.organization ?? member.organization,
+      bio: member.note || member.bio,
+      email: member.user?.email ?? member.email,
+      photoUrl: member.user?.avatarId ? `/api/media/${member.user.avatarId}` : member.photoUrl,
+      group: member.group,
+      term: member.term,
+      sortOrder: member.sortOrder,
+    }))),
   ["journal-members"],
   { revalidate: 300, tags: ["journal-members"] },
 );
