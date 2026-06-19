@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, UserRound } from "lucide-react";
+import { LayoutDashboard, LogOut, UserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -43,6 +43,9 @@ export function UserMenu({ name, avatarId, dark = false, className = "" }: { nam
           <div className="border-b border-[#e2e8f0] px-4 pb-2 pt-1">
             <p className="truncate text-xs font-bold text-[var(--uel-navy)]">{name}</p>
           </div>
+          <Link role="menuitem" href="/dashboard" onClick={() => setOpen(false)} className="flex h-10 items-center gap-3 px-4 text-sm font-semibold text-[var(--muted)] hover:bg-[#f3f7fb] hover:text-[var(--uel-brand-blue)]">
+            <LayoutDashboard size={17} /> Dashboard
+          </Link>
           <Link role="menuitem" href="/ho-so" onClick={() => setOpen(false)} className="flex h-10 items-center gap-3 px-4 text-sm font-semibold text-[var(--muted)] hover:bg-[#f3f7fb] hover:text-[var(--uel-brand-blue)]">
             <UserRound size={17} /> Hồ sơ cá nhân
           </Link>

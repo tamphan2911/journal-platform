@@ -1,60 +1,41 @@
-import { FileUp, ShieldCheck, UploadCloud } from "lucide-react";
+import { redirect } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
-import { StatusPill } from "@/components/status-pill";
-import { SubmitForm } from "./submit-form";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
+import { SubmissionWizard } from "./submit-form";
 
-export default function SubmitPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SubmitPage({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
+  const user = await getCurrentUser();
+  if (!user) redirect("/dang-nhap?next=/nop-bai");
+  const { id } = await searchParams;
+  const [issues, profile, draft] = await Promise.all([
+    prisma.journalIssue.findMany({ where: { status: { not: "ARCHIVED" } }, orderBy: [{ year: "desc" }, { volume: "desc" }, { number: "desc" }], select: { id: true, volume: true, number: true, year: true, title: true, status: true } }),
+    prisma.user.findUnique({ where: { id: user.id }, select: { firstName: true, lastName: true, name: true, email: true, organization: true } }),
+    id ? prisma.manuscript.findFirst({
+      where: { id, authorId: user.id, status: "DRAFT" },
+      select: { id: true, code: true, title: true, field: true, issueId: true, declarations: true, submissionStep: true, abstract: true, keywords: true, funding: true, authorsConfirmed: true, files: { where: { kind: "MANUSCRIPT" }, take: 1, select: { fileName: true } }, contributors: { orderBy: { sortOrder: "asc" }, select: { firstName: true, middleLastName: true, email: true, affiliation: true, bio: true, isCorresponding: true } } },
+    }) : null,
+  ]);
+  if (id && !draft) redirect("/dashboard");
+
+  const defaultAuthor = {
+    firstName: profile?.firstName || profile?.name.split(" ").at(-1) || "",
+    middleLastName: profile?.lastName || profile?.name.split(" ").slice(0, -1).join(" ") || "",
+    email: profile?.email ?? user.email,
+    affiliation: profile?.organization ?? "",
+    bio: "",
+    isCorresponding: true,
+  };
+
   return (
     <AppShell>
-      <section className="mx-auto grid min-h-screen w-full max-w-[1320px] gap-8 px-4 py-8 md:px-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:py-12">
-        <main>
-          <p className="section-kicker">Nộp bài trực tuyến</p>
-          <h1 className="gold-rule mt-2 max-w-3xl text-5xl font-extrabold leading-tight text-[var(--uel-navy)]">
-            Gửi bản thảo cho tòa soạn
-          </h1>
-          <p className="mt-4 max-w-2xl text-[var(--muted)]">
-            Tác giả cung cấp metadata, tệp bản thảo và thư gửi biên tập. Hồ sơ sẽ vào bước
-            sàng lọc hình thức trước khi phân công phản biện.
-          </p>
-          <SubmitForm />
-        </main>
-
-        <aside className="space-y-5">
-          <div className="panel p-5">
-            <div className="grid h-12 w-12 place-items-center rounded-[4px] bg-[#e8f0fb] text-[var(--nav-blue)]">
-              <UploadCloud />
-            </div>
-            <h2 className="mt-5 text-2xl font-bold text-[var(--uel-navy)]">Checklist hồ sơ</h2>
-            <div className="mt-5 space-y-3">
-              {[
-                "Bản thảo ẩn danh định dạng DOCX hoặc PDF",
-                "Thông tin tác giả liên hệ và đơn vị công tác",
-                "Tóm tắt tiếng Việt, từ khóa và chuyên mục",
-                "Cam kết đạo đức công bố và xung đột lợi ích",
-              ].map((item) => (
-                <div key={item} className="flex gap-3 rounded-[4px] border border-[#dbe6f7] p-3">
-                  <ShieldCheck className="mt-0.5 shrink-0 text-[var(--green)]" size={18} />
-                  <p className="text-sm leading-6 text-[var(--muted)]">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="panel p-5">
-            <div className="flex items-center gap-3">
-              <FileUp className="text-[var(--cyan)]" />
-              <h2 className="text-2xl font-bold text-[var(--uel-navy)]">Trạng thái sau nộp</h2>
-            </div>
-            <div className="mt-5 space-y-3">
-              <StatusPill tone="blue">SUBMITTED</StatusPill>
-              <p className="text-sm leading-6 text-[var(--muted)]">
-                Sau khi nộp thành công, hệ thống sinh mã bản thảo, ghi nhật ký và đưa hồ sơ
-                vào hàng đợi của biên tập viên.
-              </p>
-            </div>
-          </div>
-        </aside>
-      </section>
+      <SubmissionWizard
+        issues={issues}
+        defaultAuthor={defaultAuthor}
+        initialDraft={draft ? { ...draft, declarations: (draft.declarations ?? {}) as Record<string, boolean>, fileName: draft.files[0]?.fileName ?? null } : null}
+      />
     </AppShell>
   );
 }

@@ -1,90 +1,43 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
+import { submissionInfoSchema } from "@/lib/submission-workflow";
 
 export const runtime = "nodejs";
 
-const submissionSchema = z.object({
-  authorName: z.string().min(2),
-  authorEmail: z.email(),
-  affiliation: z.string().optional(),
-  title: z.string().min(12),
-  abstract: z.string().min(80),
-  field: z.string().min(2),
-  keywords: z.array(z.string()).default([]),
-  fileName: z.string().min(1).default("manuscript.docx"),
-  fileSize: z.number().int().nonnegative().default(0),
-});
-
 export async function POST(request: Request) {
-  const json = await request.json();
-  const parsed = submissionSchema.safeParse(json);
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: "Bạn cần đăng nhập để nộp bài." }, { status: 401 });
+  const parsed = submissionInfoSchema.safeParse(await request.json());
+  if (!parsed.success) return NextResponse.json({ error: "Vui lòng hoàn tất thông tin và các cam kết bắt buộc." }, { status: 422 });
 
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Dữ liệu bản thảo chưa hợp lệ.", issues: parsed.error.flatten() },
-      { status: 422 },
-    );
+  const issue = await prisma.journalIssue.findUnique({ where: { id: parsed.data.issueId }, select: { id: true } });
+  if (!issue) return NextResponse.json({ error: "Số xuất bản đã chọn không tồn tại." }, { status: 404 });
+
+  if (parsed.data.manuscriptId) {
+    const existing = await prisma.manuscript.findFirst({ where: { id: parsed.data.manuscriptId, authorId: user.id, status: "DRAFT" }, select: { id: true } });
+    if (!existing) return NextResponse.json({ error: "Không tìm thấy bản thảo chưa hoàn tất." }, { status: 404 });
+    const manuscript = await prisma.manuscript.update({ where: { id: existing.id }, data: { issueId: issue.id, field: parsed.data.section, title: parsed.data.title, declarations: parsed.data.declarations, submissionStep: 2 }, select: { id: true, code: true, submissionStep: true } });
+    return NextResponse.json(manuscript);
   }
 
-  const data = parsed.data;
   const year = new Date().getFullYear();
-  const count = await prisma.manuscript.count({
-    where: {
-      submittedAt: {
-        gte: new Date(`${year}-01-01T00:00:00.000Z`),
-        lt: new Date(`${year + 1}-01-01T00:00:00.000Z`),
-      },
-    },
-  });
-  const code = `CS-${year}-${String(count + 1).padStart(3, "0")}`;
-
-  const author = await prisma.user.upsert({
-    where: { email: data.authorEmail.toLowerCase() },
-    update: {
-      name: data.authorName,
-      affiliation: data.affiliation,
-    },
-    create: {
-      email: data.authorEmail.toLowerCase(),
-      name: data.authorName,
-      affiliation: data.affiliation,
-      role: "AUTHOR",
-    },
-  });
-
+  const code = `CS-${year}-${randomUUID().slice(0, 8).toUpperCase()}`;
   const manuscript = await prisma.manuscript.create({
     data: {
       code,
-      title: data.title,
-      abstract: data.abstract,
-      field: data.field,
-      keywords: data.keywords,
-      status: "SUBMITTED",
-      authorId: author.id,
-      files: {
-        create: {
-          kind: "MANUSCRIPT",
-          fileName: data.fileName,
-          storageKey: `submissions/${code}/${data.fileName}`,
-          mimeType: "application/octet-stream",
-          sizeBytes: data.fileSize,
-        },
-      },
-      auditLogs: {
-        create: {
-          actorId: author.id,
-          action: "SUBMISSION_CREATED",
-          detail: "Tác giả nộp bản thảo qua cổng trực tuyến.",
-        },
-      },
+      title: parsed.data.title,
+      abstract: "",
+      field: parsed.data.section,
+      status: "DRAFT",
+      authorId: user.id,
+      issueId: issue.id,
+      declarations: parsed.data.declarations,
+      submissionStep: 2,
+      auditLogs: { create: { actorId: user.id, action: "SUBMISSION_DRAFT_CREATED", detail: "Tác giả hoàn tất bước thông tin bản thảo." } },
     },
-    select: {
-      id: true,
-      code: true,
-      status: true,
-    },
+    select: { id: true, code: true, submissionStep: true },
   });
-
   return NextResponse.json(manuscript, { status: 201 });
 }

@@ -260,6 +260,11 @@ model Manuscript {
   field            String
   language         String           @default("vi")
   status           ManuscriptStatus @default(SUBMITTED)
+  submissionStep   Int              @default(1)
+  declarations     Json?
+  funding          String?
+  authorsConfirmed Boolean          @default(false)
+  completedAt      DateTime?
   authorId         String
   handlingEditorId String?
   issueId          String?
@@ -269,6 +274,7 @@ model Manuscript {
   handlingEditor   User?            @relation("EditorAssignments", fields: [handlingEditorId], references: [id])
   issue            JournalIssue?    @relation(fields: [issueId], references: [id])
   files            SubmissionFile[]
+  contributors     ManuscriptContributor[]
   reviews          Review[]
   revisions        Revision[]
   decisions        Decision[]
@@ -290,11 +296,29 @@ model SubmissionFile {
   storageKey   String
   mimeType     String
   sizeBytes    Int
+  data         Bytes?
   version      Int        @default(1)
   manuscript   Manuscript @relation(fields: [manuscriptId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
 
   @@index([manuscriptId, kind])
+}
+
+model ManuscriptContributor {
+  id              String     @id @default(cuid())
+  manuscriptId    String
+  firstName       String
+  middleLastName  String
+  email           String
+  affiliation     String
+  bio             String?
+  isCorresponding Boolean    @default(false)
+  sortOrder       Int        @default(0)
+  manuscript      Manuscript @relation(fields: [manuscriptId], references: [id], onDelete: Cascade)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([manuscriptId, sortOrder])
 }
 
 model Review {

@@ -1,0 +1,14 @@
+import { CheckCircle2, Home, LayoutDashboard } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { AppShell } from "@/components/app-shell";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
+
+export default async function SubmissionCompletePage({ params }: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser(); if (!user) redirect("/dang-nhap"); const { id } = await params;
+  const item = await prisma.manuscript.findFirst({ where: { id, authorId: user.id, status: { not: "DRAFT" } }, select: { code: true, title: true, field: true, submittedAt: true, issue: { select: { volume: true, number: true, year: true } }, contributors: { orderBy: { sortOrder: "asc" }, select: { firstName: true, middleLastName: true, isCorresponding: true } } } });
+  if (!item) redirect("/dashboard");
+  return <AppShell><section className="mx-auto grid min-h-[calc(100dvh-var(--site-header-height))] max-w-[900px] place-items-center px-4 py-12"><div className="w-full border-t-4 border-[#267447] bg-white p-6 shadow-[0_20px_50px_rgba(0,43,92,0.13)] md:p-10"><CheckCircle2 size={48} className="text-[#267447]" /><p className="section-kicker mt-6">Nộp bài thành công</p><h1 className="uel-block-title mt-2 text-3xl md:text-4xl">Cảm ơn bạn đã gửi bản thảo</h1><p className="mt-4 text-sm leading-7 text-[var(--muted)]">Tòa soạn sẽ kiểm tra hình thức và tính đầy đủ của hồ sơ trước khi phân công biên tập. Mọi thay đổi trạng thái sẽ được cập nhật trên Dashboard.</p><dl className="mt-7 grid gap-px bg-[#dbe4ee] sm:grid-cols-2"><Summary label="Mã bản thảo" value={item.code} /><Summary label="Chuyên mục" value={item.field} /><Summary label="Tiêu đề" value={item.title} /><Summary label="Số xuất bản" value={item.issue ? `Tập ${item.issue.volume}, Số ${item.issue.number}/${item.issue.year}` : "Tòa soạn phân công"} /><Summary label="Tác giả" value={item.contributors.map((a) => `${a.middleLastName} ${a.firstName}${a.isCorresponding ? " *" : ""}`).join(", ")} /><Summary label="Ngày nộp" value={new Intl.DateTimeFormat("vi-VN", { dateStyle: "long" }).format(item.submittedAt)} /></dl><div className="mt-7 flex flex-wrap gap-3"><Link href="/dashboard" className="inline-flex h-11 items-center gap-2 bg-[var(--uel-brand-blue)] px-5 text-sm font-bold text-white"><LayoutDashboard size={17} />Về Dashboard</Link><Link href="/" className="inline-flex h-11 items-center gap-2 border border-[#cbd8e8] px-5 text-sm font-bold text-[var(--uel-brand-blue)]"><Home size={17} />Trang chủ</Link></div></div></section></AppShell>;
+}
+function Summary({ label, value }: { label: string; value: string }) { return <div className="bg-[#f9fbfd] p-4"><dt className="text-[11px] font-bold uppercase text-[var(--muted)]">{label}</dt><dd className="mt-1 text-sm font-bold text-[var(--uel-navy)]">{value}</dd></div>; }
